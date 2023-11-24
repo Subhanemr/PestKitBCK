@@ -37,12 +37,61 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                 ModelState.AddModelError("Name", "A Category is available");
                 return View();
             }
-            Author author = new Author { Name = authorVM.Name,
-            Surname=authorVM.Surname};
+            Author author = new Author 
+            { 
+                Name = authorVM.Name,
+                Surname=authorVM.Surname
+            };
             await _context.Author.AddAsync(author);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Update(int id)
+        {
+            if(ModelState.IsValid) { return View(); }
+            Author author = await _context.Author.FirstOrDefaultAsync(c => c.Id == id);
+            if (author == null) { return NotFound(); }
+
+            return View(author);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(int id, Author author)
+        {
+            if (ModelState.IsValid) { return View(); };
+            Author exist = await _context.Author.FirstOrDefaultAsync(c => c.Id == id);
+            if (exist == null) { return NotFound(); };
+            bool result = await _context.Author.AnyAsync(c => c.Name.Trim().ToLower() == exist.Name.Trim().ToLower());
+            if (result)
+            {
+                ModelState.AddModelError("Name", "A Category is available");
+                return View(exist);
+            }
+            exist.Name = author.Name;
+            exist.Surname = author.Surname;
+            await _context.SaveChangesAsync();
+            return Redirect(nameof(Index));
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            if(id < 0) { return BadRequest(); }
+            
+            Author author = await _context.Author.FirstOrDefaultAsync(c => c.Id == id);
+            if(author == null) { return NotFound(); }
+            _context.Author.Remove(author); 
+            _context.SaveChanges();
+            return Redirect(nameof(Index));
+        }
+
+        public async Task<IActionResult> More(int id)
+        {
+            if (ModelState.IsValid) { return View(); }
+            Author author = _context.Author.Include(c=> c.Blogs).FirstOrDefault(c => c.Id == id);
+            if (author == null) { return NotFound(); }
+            return View(author);
         }
     }
 }

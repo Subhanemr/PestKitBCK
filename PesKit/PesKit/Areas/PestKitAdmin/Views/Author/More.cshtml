@@ -1,0 +1,23 @@
+﻿@model Author
+
+
+<div class="container">
+    <h3 class="fw-bold m-3">@Model.Name Products</h3>
+    <h4 class="fw-normal mx-5 my-3">Product Count: @Model.Blogs.Count</h4>
+</div>
+<div class="card-group">
+    @foreach (Blog blog in Model.Blogs)
+    {
+        <div class="card m-1 bg-primary text-white rounded-3">
+            <img src="~/assets/images/website-images/@blog.ImgUrl"
+                 alt="@blog.Title">
+            <div class="card-body">
+                <h5 class="card-title text-white">@blog.Title</h5>
+                <p class="card-text">@blog.Description</p
+                <p class="card-text">$@blog.CommentCount</p>
+                <p class="card-text">@blog.DateTime</p>
+            </div>
+        </div>
+    }
+</div>
+<a class="btn btn-light fw-bold fs-4" asp-action="Index" asp-controller="Category">Back</a>
