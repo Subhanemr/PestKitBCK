@@ -18,6 +18,9 @@
                                 Full Name
                             </th>
                             <th>
+                                Blogs Count
+                            </th>
+                            <th>
                                 Settings
                             </th>
                         </tr>
@@ -32,6 +35,9 @@
                                 </td>
                                 <td>
                                     @author.Name @author.Surname
+                                </td>
+                                <td>
+                                    @author.Blogs.Count
                                 </td>
                                 <td>
                                     <a asp-action="Update" asp-controller="Author" asp-route-id="@author.Id" class="btn btn-primary btn-info">

@@ -17,7 +17,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            List<Author> authors = await _context.Author.ToListAsync();
+            List<Author> authors = await _context.Author.Include(a => a.Blogs).ToListAsync();
             return View(authors);
         }
         public IActionResult Create()
