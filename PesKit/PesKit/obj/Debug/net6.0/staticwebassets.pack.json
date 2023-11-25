@@ -101,6 +101,10 @@
       "PackagePath": "staticwebassets\\admin\\images\\.DS_Store"
     },
     {
+      "Id": "C:\\Users\\T x\\Desktop\\PesKit\\PesKit\\PesKit\\wwwroot\\admin\\images\\GiGuts.png",
+      "PackagePath": "staticwebassets\\admin\\images\\GiGuts.png"
+    },
+    {
       "Id": "C:\\Users\\T x\\Desktop\\PesKit\\PesKit\\PesKit\\wwwroot\\admin\\images\\auth\\.DS_Store",
       "PackagePath": "staticwebassets\\admin\\images\\auth\\.DS_Store"
     },
@@ -365,6 +369,10 @@
       "PackagePath": "staticwebassets\\css\\style.css"
     },
     {
+      "Id": "C:\\Users\\T x\\Desktop\\PesKit\\PesKit\\PesKit\\wwwroot\\img\\68ea8e3f-f5d6-465c-a89e-f12bf818444f.jpg",
+      "PackagePath": "staticwebassets\\img\\68ea8e3f-f5d6-465c-a89e-f12bf818444f.jpg"
+    },
+    {
       "Id": "C:\\Users\\T x\\Desktop\\PesKit\\PesKit\\PesKit\\wwwroot\\img\\about-img.jpg",
       "PackagePath": "staticwebassets\\img\\about-img.jpg"
     },
@@ -391,6 +399,10 @@
     {
       "Id": "C:\\Users\\T x\\Desktop\\PesKit\\PesKit\\PesKit\\wwwroot\\img\\carousel-2.jpg",
       "PackagePath": "staticwebassets\\img\\carousel-2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\T x\\Desktop\\PesKit\\PesKit\\PesKit\\wwwroot\\img\\f019628b-de18-4226-ae11-60e2d2154cfb.jpg",
+      "PackagePath": "staticwebassets\\img\\f019628b-de18-4226-ae11-60e2d2154cfb.jpg"
     },
     {
       "Id": "C:\\Users\\T x\\Desktop\\PesKit\\PesKit\\PesKit\\wwwroot\\img\\project-1.jpg",

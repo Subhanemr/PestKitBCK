@@ -26,7 +26,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AuthorVM authorVM)
+        public async Task<IActionResult> Create(CreateUpdateAuthorVM authorVM)
         {
             if (!ModelState.IsValid) return View();
 
@@ -50,7 +50,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
 
         public async Task<IActionResult> Update(int id)
         {
-            if(ModelState.IsValid) { return View(); }
+            if(id <= 0) { return BadRequest(); }
             Author author = await _context.Author.FirstOrDefaultAsync(c => c.Id == id);
             if (author == null) { return NotFound(); }
 
@@ -58,9 +58,9 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(int id, Author author)
+        public async Task<IActionResult> Update(int id, CreateUpdateAuthorVM authorVM)
         {
-            if (ModelState.IsValid) { return View(); };
+            if (ModelState.IsValid) { return View(authorVM); };
             Author exist = await _context.Author.FirstOrDefaultAsync(c => c.Id == id);
             if (exist == null) { return NotFound(); };
             bool result = await _context.Author.AnyAsync(c => c.Name.Trim().ToLower() == exist.Name.Trim().ToLower());
@@ -69,8 +69,8 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                 ModelState.AddModelError("Name", "A Category is available");
                 return View(exist);
             }
-            exist.Name = author.Name;
-            exist.Surname = author.Surname;
+            exist.Name = authorVM.Name;
+            exist.Surname = authorVM.Surname;
             await _context.SaveChangesAsync();
             return Redirect(nameof(Index));
         }
@@ -88,10 +88,11 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
 
         public async Task<IActionResult> More(int id)
         {
-            if (ModelState.IsValid) { return View(); }
+            if (id <= 0) { return BadRequest(); }
             Author author = _context.Author.Include(c=> c.Blogs).FirstOrDefault(c => c.Id == id);
             if (author == null) { return NotFound(); }
             return View(author);
         }
+
     }
 }

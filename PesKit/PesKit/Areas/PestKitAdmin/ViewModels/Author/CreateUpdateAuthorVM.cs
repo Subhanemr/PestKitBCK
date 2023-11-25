@@ -2,7 +2,7 @@
 
 namespace PesKit.Areas.PestKitAdmin.ViewModels
 {
-    public class AuthorVM
+    public class CreateUpdateAuthorVM
     {
         [Required]
         public string Name { get; set; }
