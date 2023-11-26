@@ -133,6 +133,8 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             if (id <= 0) { return BadRequest(); }
             Blog blog = await _context.Blogs.FirstOrDefaultAsync(b => b.Id == id);
             if (blog == null) { return NotFound(); }
+            blog.ImgUrl.DeleteFile(_env.WebRootPath, "img");
+
 
             _context.Blogs.Remove(blog);
             _context.SaveChanges();

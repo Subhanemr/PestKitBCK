@@ -115,6 +115,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             if (id <= 0) { return BadRequest(); }
             Department department = await _context.Departments.FirstOrDefaultAsync(b => b.Id == id);
             if (department == null) { return NotFound(); }
+            department.ImgUrl.DeleteFile(_env.WebRootPath, "img");
 
             _context.Departments.Remove(department);
             _context.SaveChanges();

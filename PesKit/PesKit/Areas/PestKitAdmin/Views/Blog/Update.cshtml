@@ -31,6 +31,9 @@
                     <span asp-validation-for="AuthorId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
+                    <img src="~/img/@Model.ImgUrl" class="form-control w-50">
+                </div>
+                <div class="form-group">
                     <label asp-for="Photo">Photo</label>
                     <input asp-for="Photo" class="form-control" placeholder="Photo">
                     <span asp-validation-for="Photo" class="text-danger"></span>
