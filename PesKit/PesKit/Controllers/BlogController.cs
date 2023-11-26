@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PesKit.DAL;
+using PesKit.Models;
 
 namespace PesKit.Controllers
 {
@@ -12,9 +14,10 @@ namespace PesKit.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<Blog> blogs = await _context.Blogs.Include(b => b.Author).ToListAsync();
+            return View(blogs);
         }
     }
 }

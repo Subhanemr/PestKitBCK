@@ -83,7 +83,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             if(author == null) { return NotFound(); }
             _context.Author.Remove(author); 
             _context.SaveChanges();
-            return Redirect(nameof(Index));
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> More(int id)
