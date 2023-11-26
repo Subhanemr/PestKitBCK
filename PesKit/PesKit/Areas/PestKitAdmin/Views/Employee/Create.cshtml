@@ -1,0 +1,60 @@
+﻿@model CreateEmployeeVM
+
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Create Blog</h4>
+            <form class="forms-sample" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label asp-for="Name">Name</label>
+                    <input asp-for="Name" class="form-control" placeholder="Name">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Surname">Surname</label>
+                    <input asp-for="Surname" class="form-control" placeholder="Surname">
+                    <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="InstLink">Instagram Link</label>
+                    <input asp-for="InstLink" class="form-control" placeholder="Instagram Link">
+                    <span asp-validation-for="InstLink" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TwitLink">Twitter Link</label>
+                    <input asp-for="TwitLink" class="form-control" placeholder="Twitter Link">
+                    <span asp-validation-for="TwitLink" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FaceLink">Facebook Link</label>
+                    <input asp-for="FaceLink" class="form-control" placeholder="Facebook Link">
+                    <span asp-validation-for="FaceLink" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LinkedLink">Linked-In Link</label>
+                    <input asp-for="LinkedLink" class="form-control" placeholder="Linked-In Link">
+                    <span asp-validation-for="LinkedLink" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <select asp-for="DepartmentId" class="form-control" asp-items=" new SelectList (ViewBag.Departments, nameof(Department.Id), nameof(Department.Name))">
+                        <option selected disabled>Choose Department</option>
+                    </select>
+                    <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <select asp-for="PositionId" class="form-control" asp-items=" new SelectList (ViewBag.Positions, nameof(Position.Id), nameof(Position.Name))">
+                        <option selected disabled>Choose Position</option>
+                    </select>
+                    <span asp-validation-for="PositionId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Photo">Photo</label>
+                    <input asp-for="Photo" class="form-control" placeholder="Photo">
+                    <span asp-validation-for="Photo" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                <a class="btn btn-light" asp-action="Index" asp-controller="Employee">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

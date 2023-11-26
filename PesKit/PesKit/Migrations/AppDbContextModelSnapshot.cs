@@ -40,7 +40,7 @@ namespace PesKit.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Author");
+                    b.ToTable("Author", (string)null);
                 });
 
             modelBuilder.Entity("PesKit.Models.Blog", b =>
@@ -76,7 +76,7 @@ namespace PesKit.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Blogs");
+                    b.ToTable("Blogs", (string)null);
                 });
 
             modelBuilder.Entity("PesKit.Models.Department", b =>
@@ -97,7 +97,7 @@ namespace PesKit.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("PesKit.Models.Employee", b =>
@@ -144,7 +144,7 @@ namespace PesKit.Migrations
 
                     b.HasIndex("PositionId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("PesKit.Models.Position", b =>
@@ -161,7 +161,7 @@ namespace PesKit.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Positions");
+                    b.ToTable("Positions", (string)null);
                 });
 
             modelBuilder.Entity("PesKit.Models.Blog", b =>
