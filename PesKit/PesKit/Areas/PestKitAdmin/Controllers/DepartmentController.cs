@@ -31,6 +31,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateDepartmentVM departmentVM)
         {
+            if (!ModelState.IsValid) { return View(departmentVM); }
             bool result = await _context.Departments.AnyAsync(b => b.Name.Trim().ToLower() == departmentVM.Name.Trim().ToLower());
             if (result)
             {

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "UdsEdDNATgxnl6KQHe6DwrW6Dt+EuBEAbC8gB8qRl44=",
+  "Hash": "NUvGo5x5f2klcMKXglo8X5wk2jQmBbd6k2tgbAzjaU0=",
   "Source": "PesKit",
   "BasePath": "_content/PesKit",
   "Mode": "Default",
@@ -1579,6 +1579,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\style.css"
+    },
+    {
+      "Identity": "C:\\Users\\T x\\Desktop\\PesKit\\PesKit\\PesKit\\wwwroot\\img\\02c8bcb7-b724-49cc-8221-76598db4693c.jpg",
+      "SourceId": "PesKit",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\T x\\Desktop\\PesKit\\PesKit\\PesKit\\wwwroot\\",
+      "BasePath": "_content/PesKit",
+      "RelativePath": "img/02c8bcb7-b724-49cc-8221-76598db4693c.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\02c8bcb7-b724-49cc-8221-76598db4693c.jpg"
     },
     {
       "Identity": "C:\\Users\\T x\\Desktop\\PesKit\\PesKit\\PesKit\\wwwroot\\img\\0a7fb5fe-8195-4485-b982-939d18a8d78d.jpg",

@@ -11,8 +11,10 @@ namespace PesKit.Areas.PestKitAdmin.ViewModels
         [MaxLength(25, ErrorMessage = "It should not exceed 25 characters")]
         public string Surname { get; set; }
         [Required(ErrorMessage = "Department must be entered mutled")]
+        [Range(1, int.MaxValue, ErrorMessage = "Department must be greater than 0 ")]
         public int DepartmentId { get; set; }
         [Required(ErrorMessage = "Position must be entered mutled")]
+        [Range(1, int.MaxValue, ErrorMessage = "Position must be greater than 0 ")]
         public int PositionId { get; set; }
         public string ImgUrl { get; set; }
         public IFormFile? Photo { get; set; }

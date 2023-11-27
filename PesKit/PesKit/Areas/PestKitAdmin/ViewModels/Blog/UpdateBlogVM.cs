@@ -14,6 +14,7 @@ namespace PesKit.Areas.PestKitAdmin.ViewModels
         public IFormFile? Photo { get; set; }
         public string ImgUrl { get; set; }
         [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Author must be greater than 0 ")]
         public int? AuthorId { get; set; }
         [Required]
         public int CommentCount { get; set; }

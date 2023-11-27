@@ -33,6 +33,12 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateEmployeeVM employeeVM)
         {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Departments = await _context.Departments.ToListAsync();
+                ViewBag.Positions = await _context.Positions.ToListAsync();
+                return View(employeeVM);
+            }
             if (employeeVM.Photo is null)
             {
                 ViewBag.Departments = await _context.Departments.ToListAsync();
