@@ -25,38 +25,40 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         }
         public async Task<IActionResult> Create()
         {
-            ViewBag.Departments = await _context.Departments.ToListAsync();
-            ViewBag.Positions = await _context.Positions.ToListAsync();
+            CreateEmployeeVM employeeVM = new CreateEmployeeVM { 
+            Departments = await _context.Departments.ToListAsync(),
+            Positions = await _context.Positions.ToListAsync()
+            };
 
-            return View();
+            return View(employeeVM);
         }
         [HttpPost]
         public async Task<IActionResult> Create(CreateEmployeeVM employeeVM)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Departments = await _context.Departments.ToListAsync();
-                ViewBag.Positions = await _context.Positions.ToListAsync();
+                employeeVM.Departments = await _context.Departments.ToListAsync();
+                employeeVM.Positions = await _context.Positions.ToListAsync();
                 return View(employeeVM);
             }
             if (employeeVM.Photo is null)
             {
-                ViewBag.Departments = await _context.Departments.ToListAsync();
-                ViewBag.Positions = await _context.Positions.ToListAsync();
+                employeeVM.Departments = await _context.Departments.ToListAsync();
+                employeeVM.Positions = await _context.Positions.ToListAsync();
                 ModelState.AddModelError("Photo", "The image must be uploaded");
                 return View(employeeVM);
             }
             if (!employeeVM.Photo.ValiDataType())
             {
-                ViewBag.Departments = await _context.Departments.ToListAsync();
-                ViewBag.Positions = await _context.Positions.ToListAsync();
+                employeeVM.Departments = await _context.Departments.ToListAsync();
+                employeeVM.Positions = await _context.Positions.ToListAsync();
                 ModelState.AddModelError("Photo", "File Not supported");
                 return View(employeeVM);
             }
             if (!employeeVM.Photo.ValiDataSize(12))
             {
-                ViewBag.Departments = await _context.Departments.ToListAsync();
-                ViewBag.Positions = await _context.Positions.ToListAsync();
+                employeeVM.Departments = await _context.Departments.ToListAsync();
+                employeeVM.Positions = await _context.Positions.ToListAsync();
                 ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
                 return View(employeeVM);
             }
@@ -98,9 +100,10 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                 TwitLink = employee.TwitLink,
                 LinkedLink = employee.LinkedLink,
                 ImgUrl = employee.ImgUrl,
-            };
-            ViewBag.Departments = await _context.Departments.ToListAsync();
-            ViewBag.Positions = await _context.Positions.ToListAsync();
+                Departments = await _context.Departments.ToListAsync(),
+                Positions = await _context.Positions.ToListAsync(),
+        };
+
             return View(employeeVM);
         }
 
@@ -109,8 +112,8 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         {
             if (ModelState.IsValid)
             {
-                ViewBag.Departments = await _context.Departments.ToListAsync();
-                ViewBag.Positions = await _context.Positions.ToListAsync();
+                employeeVM.Departments = await _context.Departments.ToListAsync();
+                employeeVM.Positions = await _context.Positions.ToListAsync();
                 return View(employeeVM);
             }
             Employee existed = _context.Employees.FirstOrDefault(b => b.Id == id);
@@ -119,15 +122,15 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             {
                 if (!employeeVM.Photo.ValiDataType())
                 {
-                    ViewBag.Departments = await _context.Departments.ToListAsync();
-                    ViewBag.Positions = await _context.Positions.ToListAsync();
+                    employeeVM.Departments = await _context.Departments.ToListAsync();
+                    employeeVM.Positions = await _context.Positions.ToListAsync();
                     ModelState.AddModelError("Photo", "File Not supported");
                     return View(employeeVM);
                 }
                 if (!employeeVM.Photo.ValiDataSize(12))
                 {
-                    ViewBag.Departments = await _context.Departments.ToListAsync();
-                    ViewBag.Positions = await _context.Positions.ToListAsync();
+                    employeeVM.Departments = await _context.Departments.ToListAsync();
+                    employeeVM.Positions = await _context.Positions.ToListAsync();
                     ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
                     return View(employeeVM);
                 }

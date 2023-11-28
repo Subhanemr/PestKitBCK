@@ -36,13 +36,13 @@
                     <span asp-validation-for="LinkedLink" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <select asp-for="DepartmentId" class="form-control" asp-items=" new SelectList (ViewBag.Departments, nameof(Department.Id), nameof(Department.Name))">
+                    <select asp-for="DepartmentId" class="form-control" asp-items=" new SelectList (Model.Departments, nameof(Department.Id), nameof(Department.Name))">
                         <option selected disabled>Choose Department</option>
                     </select>
                     <span asp-validation-for="DepartmentId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <select asp-for="PositionId" class="form-control" asp-items=" new SelectList (ViewBag.Positions, nameof(Position.Id), nameof(Position.Name))">
+                    <select asp-for="PositionId" class="form-control" asp-items=" new SelectList (Model.Positions, nameof(Position.Id), nameof(Position.Name))">
                         <option selected disabled>Choose Position</option>
                     </select>
                     <span asp-validation-for="PositionId" class="text-danger"></span>

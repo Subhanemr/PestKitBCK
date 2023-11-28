@@ -12,6 +12,15 @@
                     <p class="card-text">Description: @Model.Description</p>
                     <p class="card-text">Comments Count: @Model.CommentCount</p>
                     <p class="card-text">Data: @Model.DateTime.ToString("dd MMMM, yyyy")</p>
+                    <p class="card-text">
+                        Tags: @foreach (BlogTag productTag in Model.Tags)
+                        {
+                            @productTag.Tag.Name
+
+                            @(productTag != Model.Tags[Model.Tags.Count - 1] ? ", " : "")
+                        }
+                    </p>
+
                 </div>
             </div>
         </div>

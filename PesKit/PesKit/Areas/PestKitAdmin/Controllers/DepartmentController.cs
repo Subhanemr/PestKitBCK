@@ -89,6 +89,12 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             if (ModelState.IsValid) { return View(departmentVM); }
             Department existed = _context.Departments.FirstOrDefault(b => b.Id == id);
             if (existed == null) { return NotFound(); }
+            bool result = await _context.Departments.AnyAsync(b => b.Name.Trim().ToLower() == departmentVM.Name.Trim().ToLower() && b.Id != id);
+            if (result)
+            {
+                ModelState.AddModelError("Title", "A Title is available");
+                return View(departmentVM);
+            }
             if (departmentVM.Photo is not null)
             {
                 if (!departmentVM.Photo.ValiDataType())

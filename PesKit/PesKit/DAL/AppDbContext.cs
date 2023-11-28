@@ -12,6 +12,8 @@ namespace PesKit.DAL
         public DbSet<Author> Author { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Position> Positions { get; set; }
-
+        public DbSet<Slide> Slides { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<BlogTag> BlogTags { get; set; }
     }
 }

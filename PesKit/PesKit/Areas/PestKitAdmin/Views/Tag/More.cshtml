@@ -1,0 +1,23 @@
+﻿@model Tag
+
+
+<div class="container">
+    <h3 class="fw-bold m-3">@Model.Name Blogs</h3>
+    <h4 class="fw-normal mx-5 my-3">Blogs Count: @Model.BlogTags.Count</h4>
+</div>
+<div class="card-group w-25">
+    @foreach (BlogTag blog in Model.BlogTags)
+    {
+        <div class="card m-1 bg-primary text-white rounded-3">
+            <img src="~/img//@blog.Blog.ImgUrl"
+                 alt="@blog.Blog.Title">
+            <div class="card-body">
+                <h5 class="card-title text-white">Title: @blog.Blog.Title</h5>
+                <p class="card-text">Description: @blog.Blog.Description</p
+                <p class="card-text">Comment count: @blog.Blog.CommentCount</p>
+                <p class="card-text">Date: @blog.Blog.DateTime</p>
+            </div>
+        </div>
+    }
+</div>
+<a class="btn btn-light fw-bold fs-4" asp-action="Index" asp-controller="Tag">Back</a>

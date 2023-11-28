@@ -10,5 +10,6 @@
         public int AuthorId { get; set; }
         public int CommentCount { get; set; }
         public Author Author { get; set; }
+        public List<BlogTag> Tags { get; set; }
     }
 }

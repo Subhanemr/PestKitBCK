@@ -63,10 +63,10 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             if (ModelState.IsValid) { return View(authorVM); };
             Author exist = await _context.Author.FirstOrDefaultAsync(c => c.Id == id);
             if (exist == null) { return NotFound(); };
-            bool result = await _context.Author.AnyAsync(c => c.Name.Trim().ToLower() == exist.Name.Trim().ToLower());
+            bool result = await _context.Author.AnyAsync(c => c.Name.Trim().ToLower() == exist.Name.Trim().ToLower() && c.Id != id);
             if (result)
             {
-                ModelState.AddModelError("Name", "A Category is available");
+                ModelState.AddModelError("Name", "A Name is available");
                 return View(exist);
             }
             exist.Name = authorVM.Name;

@@ -5,11 +5,11 @@
     <h3 class="fw-bold m-3">@Model.Name Employees</h3>
     <h4 class="fw-normal mx-5 my-3">Employees Count: @Model.Employees.Count</h4>
 </div>
-<div class="card-group">
+<div class="card-group w-25">
     @foreach (Employee employee in Model.Employees)
     {
         <div class="card m-1 bg-primary text-white rounded-3">
-            <img src="~/assets/images/website-images/@employee.ImgUrl"
+            <img src="~/img//@employee.ImgUrl"
                  alt="@employee.Name" class="card-img-top">
             <div class="card-body">
                 <h5 class="card-title text-white">Name: @employee.Name @employee.Surname</h5>

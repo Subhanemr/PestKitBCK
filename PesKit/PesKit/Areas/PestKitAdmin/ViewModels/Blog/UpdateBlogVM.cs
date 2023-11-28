@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PesKit.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace PesKit.Areas.PestKitAdmin.ViewModels
 {
@@ -18,5 +19,8 @@ namespace PesKit.Areas.PestKitAdmin.ViewModels
         public int? AuthorId { get; set; }
         [Required]
         public int CommentCount { get; set; }
+        public List<Author>? Authors { get; set; }
+        public List<int> TagIds { get; set; }
+        public List<Tag>? Tagss { get; set; }
     }
 }

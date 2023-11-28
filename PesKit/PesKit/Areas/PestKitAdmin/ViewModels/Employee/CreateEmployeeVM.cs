@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PesKit.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace PesKit.Areas.PestKitAdmin.ViewModels
 {
@@ -22,5 +23,7 @@ namespace PesKit.Areas.PestKitAdmin.ViewModels
         public string? TwitLink { get; set; }
         public string? FaceLink { get; set; }
         public string? LinkedLink { get; set; }
+        public List<Department>? Departments { get; set; }
+        public List<Position>? Positions { get; set; }
     }
 }
