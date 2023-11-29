@@ -53,14 +53,15 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             if(id <= 0) { return BadRequest(); }
             Author author = await _context.Author.FirstOrDefaultAsync(c => c.Id == id);
             if (author == null) { return NotFound(); }
+            CreateUpdateAuthorVM authorVM = new CreateUpdateAuthorVM {Name= author.Name, Surname=author.Surname };
 
-            return View(author);
+            return View(authorVM);
         }
 
         [HttpPost]
         public async Task<IActionResult> Update(int id, CreateUpdateAuthorVM authorVM)
         {
-            if (ModelState.IsValid) { return View(authorVM); };
+            if (!ModelState.IsValid) { return View(authorVM); };
             Author exist = await _context.Author.FirstOrDefaultAsync(c => c.Id == id);
             if (exist == null) { return NotFound(); };
             bool result = await _context.Author.AnyAsync(c => c.Name.Trim().ToLower() == exist.Name.Trim().ToLower() && c.Id != id);
@@ -72,7 +73,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             exist.Name = authorVM.Name;
             exist.Surname = authorVM.Surname;
             await _context.SaveChangesAsync();
-            return Redirect(nameof(Index));
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(int id)
