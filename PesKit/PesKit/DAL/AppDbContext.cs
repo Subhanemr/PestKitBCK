@@ -15,5 +15,8 @@ namespace PesKit.DAL
         public DbSet<Slide> Slides { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<BlogTag> BlogTags { get; set; }
+        public DbSet<SlideImage> SlideImages { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<ProjectImage> ProjectImages { get; set; }
     }
 }

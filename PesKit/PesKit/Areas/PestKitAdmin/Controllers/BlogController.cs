@@ -66,7 +66,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                 ModelState.AddModelError("Photo", "File Not supported");
                 return View(blogVM);
             }
-            if (!blogVM.Photo.ValiDataSize(12))
+            if (!blogVM.Photo.ValiDataSize(10))
             {
                 blogVM.Authors = await _context.Author.ToListAsync();
                 blogVM.Tags = await _context.Tags.ToListAsync();

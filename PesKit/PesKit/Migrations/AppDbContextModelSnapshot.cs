@@ -187,6 +187,48 @@ namespace PesKit.Migrations
                     b.ToTable("Positions");
                 });
 
+            modelBuilder.Entity("PesKit.Models.Project", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("PesKit.Models.ProjectImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool?>("IsPrimary")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProjectImages");
+                });
+
             modelBuilder.Entity("PesKit.Models.Slide", b =>
                 {
                     b.Property<int>("Id")
@@ -194,6 +236,10 @@ namespace PesKit.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("SubTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -212,6 +258,9 @@ namespace PesKit.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<bool?>("IsPrimary")
+                        .HasColumnType("bit");
+
                     b.Property<int>("SlideId")
                         .HasColumnType("int");
 
@@ -223,7 +272,7 @@ namespace PesKit.Migrations
 
                     b.HasIndex("SlideId");
 
-                    b.ToTable("SlideImage");
+                    b.ToTable("SlideImages");
                 });
 
             modelBuilder.Entity("PesKit.Models.Tag", b =>
@@ -292,6 +341,17 @@ namespace PesKit.Migrations
                     b.Navigation("Position");
                 });
 
+            modelBuilder.Entity("PesKit.Models.ProjectImage", b =>
+                {
+                    b.HasOne("PesKit.Models.Project", "Project")
+                        .WithMany("ProjectImages")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("PesKit.Models.SlideImage", b =>
                 {
                     b.HasOne("PesKit.Models.Slide", "Slide")
@@ -321,6 +381,11 @@ namespace PesKit.Migrations
             modelBuilder.Entity("PesKit.Models.Position", b =>
                 {
                     b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("PesKit.Models.Project", b =>
+                {
+                    b.Navigation("ProjectImages");
                 });
 
             modelBuilder.Entity("PesKit.Models.Slide", b =>
