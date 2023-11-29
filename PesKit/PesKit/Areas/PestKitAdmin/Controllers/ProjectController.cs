@@ -118,5 +118,135 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Update(int id)
+        {
+            if (id <= 0) { return BadRequest(); }
+            Project project = await _context.Projects.Include(x => x.ProjectImages).FirstOrDefaultAsync(x => x.Id == id);
+            if (project is null) { return NotFound(); }
+            UpdateProjectVM projectVM = new UpdateProjectVM {
+            Name  = project.Name,
+            ProjectImages = project.ProjectImages
+            };
+            return View(projectVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(int id, UpdateProjectVM projectVM)
+        {
+            Project existed = await _context.Projects.Include(pi => pi.ProjectImages).FirstOrDefaultAsync(x => x.Id == id);
+
+            projectVM.ProjectImages = existed.ProjectImages;
+            if (!ModelState.IsValid) { return View(projectVM); }
+            if (existed is null) { return NotFound(); }
+
+            if(projectVM.MainPhoto is not null)
+            {
+                if (!projectVM.MainPhoto.ValiDataType())
+                {
+                    ModelState.AddModelError("Photo", "File Not supported");
+                    return View(projectVM);
+                }
+                if (!projectVM.MainPhoto.ValiDataSize(10))
+                {
+                    ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
+                    return View(projectVM);
+                }
+            }
+            if (projectVM.HoverPhoto is not null)
+            {
+                if (!projectVM.HoverPhoto.ValiDataType())
+                {
+                    ModelState.AddModelError("Photo", "File Not supported");
+                    return View(projectVM);
+                }
+                if (!projectVM.HoverPhoto.ValiDataSize(10))
+                {
+                    ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
+                    return View(projectVM);
+                }
+            }
+
+            if (projectVM.MainPhoto is not null)
+            {
+                string fileName = await projectVM.MainPhoto.CreateFile(_env.WebRootPath, "img");
+                ProjectImage prMain = existed.ProjectImages.FirstOrDefault(pi => pi.IsPrimary == true);
+
+                prMain.Url.DeleteFile(_env.WebRootPath, "img");
+                _context.ProjectImages.Remove(prMain);
+
+                existed.ProjectImages.Add(new ProjectImage
+                {
+                    IsPrimary = true,
+                    Url = fileName
+                });
+            }
+
+            if (projectVM.HoverPhoto is not null)
+            {
+                string fileName = await projectVM.HoverPhoto.CreateFile(_env.WebRootPath, "img");
+                ProjectImage prMain = existed.ProjectImages.FirstOrDefault(pi => pi.IsPrimary == true);
+
+                prMain.Url.DeleteFile(_env.WebRootPath, "img");
+                _context.ProjectImages.Remove(prMain);
+
+                existed.ProjectImages.Add(new ProjectImage
+                {
+                    IsPrimary = false,
+                    Url = fileName
+                });
+            }
+
+            if (existed.ProjectImages is null) { existed.ProjectImages = new List<ProjectImage>();}
+
+            if (projectVM.ImageIds is null) projectVM.ImageIds = new List<int>();
+
+            List<ProjectImage> remove = existed.ProjectImages.Where(pi => pi.IsPrimary ==null && !projectVM.ImageIds.Exists(imgId => imgId == pi.Id)).ToList();
+
+            foreach (ProjectImage image in remove)
+            {
+                image.Url.DeleteFile(_env.WebRootPath, "img");
+                existed.ProjectImages.Remove(image);   
+            }
+
+            if (projectVM.Photos is not null)
+            {
+                TempData["Message"] = "";
+
+                foreach (IFormFile photo in projectVM.Photos)
+                {
+                    if (!photo.ValiDataType())
+                    {
+                        TempData["Message"] += $"<p class=\"text-danger\">{photo.Name} type is not suitable</p>";
+                        continue;
+                    }
+
+                    if (!photo.ValiDataSize(10))
+                    {
+                        TempData["Message"] += $"<p class=\"text-danger\">{photo.Name} the size is not suitable</p>";
+                        continue;
+                    }
+
+                    existed.ProjectImages.Add(new ProjectImage
+                    {
+                        IsPrimary = null,
+                        Url = await photo.CreateFile(_env.WebRootPath, "img")
+                    });
+                }
+            }
+
+            existed.Name = projectVM.Name;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> More(int id)
+        {
+            if(id <= 0) { return BadRequest(); }
+            Project project = await _context.Projects.Include(p => p.ProjectImages).FirstOrDefaultAsync(p => p.Id == id);
+            if (project is null) { return NotFound(); }
+            return View(project);
+        }
+
     }
 }

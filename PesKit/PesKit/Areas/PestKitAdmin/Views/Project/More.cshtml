@@ -1,0 +1,30 @@
+﻿@model Project
+
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-3 g-4 m-1">
+
+        <div class="col">
+            <div class="card">
+                <img src="~/img//@Model.ProjectImages.FirstOrDefault(p => p.IsPrimary == true).Url" class="img-fluid rounded-start" alt="@Model.Name">
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img src="~/img//@Model.ProjectImages.FirstOrDefault(p => p.IsPrimary == false).Url" class="img-fluid rounded-start" alt="@Model.Name">
+            </div>
+        </div>
+
+        @foreach (ProjectImage productImage in Model.ProjectImages.Where(p => p.IsPrimary == null))
+        {
+            <div class="col">
+                <div class="card ">
+                    <img src="~/img//@productImage.Url" class="img-fluid rounded-start" alt="@Model.Name">
+                </div>
+            </div>
+        }
+    </div>
+    <div class="card-body m-2">
+        <h5 class="card-title">Name: @Model.Name</h5>
+    </div>
+</div>
+<a class="btn btn-light fw-bold fs-4" asp-action="Index" asp-controller="Project">Back</a>

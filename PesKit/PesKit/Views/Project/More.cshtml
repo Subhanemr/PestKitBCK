@@ -32,8 +32,9 @@
                     </div>
                 </div>
         </div>
-
-        @foreach (ProjectImage projectImage in Model.ProjectImages)
+        <img src="~/img/@Model.ProjectImages.FirstOrDefault(p => p.IsPrimary == true)?.Url" class="img-fluid h-100" alt="@Model.Name">
+        <img src="~/img/@Model.ProjectImages.FirstOrDefault(p => p.IsPrimary == false)?.Url" class="img-fluid h-100" alt="@Model.Name">
+        @foreach (ProjectImage projectImage in Model.ProjectImages.Where(p => p.IsPrimary == null))
         {
-            <img src="~/img/@Model.ProjectImages.FirstOrDefault()?.Url" class="img-fluid h-100" alt="@Model.Name">
+            <img src="~/img/@Model.ProjectImages.FirstOrDefault(p => p.IsPrimary == null)?.Url" class="img-fluid h-100" alt="@Model.Name">
         }
