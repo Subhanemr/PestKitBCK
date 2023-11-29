@@ -5,6 +5,7 @@
         public int Id { get; set; }
         public string Url { get; set; }
         public bool? IsPrimary { get; set; }
+        public int SlideId { get; set; }
         public Slide Slide { get; set; }
     }
 }

@@ -37,7 +37,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                 ModelState.AddModelError("Name", "A Name is available");
                 return View(projectVM);
             }
-            if(projectVM.MainPhoto is null)
+            if (projectVM.MainPhoto is null)
             {
                 ModelState.AddModelError("Photo", "The image must be uploaded");
                 return View(projectVM);
@@ -72,9 +72,10 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
 
 
 
-            ProjectImage mainimage = new ProjectImage { 
-            IsPrimary = true,
-            Url =await projectVM.MainPhoto.CreateFile(_env.WebRootPath, "img")
+            ProjectImage mainimage = new ProjectImage
+            {
+                IsPrimary = true,
+                Url = await projectVM.MainPhoto.CreateFile(_env.WebRootPath, "img")
             };
 
 
@@ -84,9 +85,10 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                 Url = await projectVM.HoverPhoto.CreateFile(_env.WebRootPath, "img")
             };
 
-            Project project = new Project {
+            Project project = new Project
+            {
                 Name = projectVM.Name,
-                ProjectImages = new List<ProjectImage>{hoverimage, mainimage}
+                ProjectImages = new List<ProjectImage> { hoverimage, mainimage }
             };
 
             TempData["Message"] = "";
@@ -123,9 +125,10 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             if (id <= 0) { return BadRequest(); }
             Project project = await _context.Projects.Include(x => x.ProjectImages).FirstOrDefaultAsync(x => x.Id == id);
             if (project is null) { return NotFound(); }
-            UpdateProjectVM projectVM = new UpdateProjectVM {
-            Name  = project.Name,
-            ProjectImages = project.ProjectImages
+            UpdateProjectVM projectVM = new UpdateProjectVM
+            {
+                Name = project.Name,
+                ProjectImages = project.ProjectImages
             };
             return View(projectVM);
         }
@@ -139,7 +142,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             if (!ModelState.IsValid) { return View(projectVM); }
             if (existed is null) { return NotFound(); }
 
-            if(projectVM.MainPhoto is not null)
+            if (projectVM.MainPhoto is not null)
             {
                 if (!projectVM.MainPhoto.ValiDataType())
                 {
@@ -196,16 +199,16 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                 });
             }
 
-            if (existed.ProjectImages is null) { existed.ProjectImages = new List<ProjectImage>();}
+            if (existed.ProjectImages is null) { existed.ProjectImages = new List<ProjectImage>(); }
 
             if (projectVM.ImageIds is null) projectVM.ImageIds = new List<int>();
 
-            List<ProjectImage> remove = existed.ProjectImages.Where(pi => pi.IsPrimary ==null && !projectVM.ImageIds.Exists(imgId => imgId == pi.Id)).ToList();
+            List<ProjectImage> remove = existed.ProjectImages.Where(pi => pi.IsPrimary == null && !projectVM.ImageIds.Exists(imgId => imgId == pi.Id)).ToList();
 
             foreach (ProjectImage image in remove)
             {
                 image.Url.DeleteFile(_env.WebRootPath, "img");
-                existed.ProjectImages.Remove(image);   
+                existed.ProjectImages.Remove(image);
             }
 
             if (projectVM.Photos is not null)
@@ -242,10 +245,29 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
 
         public async Task<IActionResult> More(int id)
         {
-            if(id <= 0) { return BadRequest(); }
+            if (id <= 0) { return BadRequest(); }
             Project project = await _context.Projects.Include(p => p.ProjectImages).FirstOrDefaultAsync(p => p.Id == id);
             if (project is null) { return NotFound(); }
             return View(project);
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id <= 0) { return BadRequest(); }
+            Project project = await _context.Projects.Include(pi => pi.ProjectImages).FirstOrDefaultAsync(p => p.Id == id);
+            if (project is null) { return NotFound(); };
+            foreach (ProjectImage image in project.ProjectImages)
+            {
+                image.Url.DeleteFile(_env.WebRootPath, "img");
+            }
+
+            List<ProjectImage> remove = await _context.ProjectImages.Where(p => p.ProjectId == id).ToListAsync();
+            _context.ProjectImages.RemoveRange(remove);
+
+            _context.Projects.Remove(project);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
     }
