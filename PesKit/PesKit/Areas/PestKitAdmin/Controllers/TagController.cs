@@ -85,7 +85,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             }
             exist.Name = tagVM.Name;
             await _context.SaveChangesAsync();
-            return Redirect(nameof(Index));
+            return RedirectToAction(nameof(Index));
         }
     }
 }
