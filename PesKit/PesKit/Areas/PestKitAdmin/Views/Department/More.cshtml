@@ -5,7 +5,7 @@
     <h3 class="fw-bold m-3">@Model.Name Employees</h3>
     <h4 class="fw-normal mx-5 my-3">Employees Count: @Model.Employees.Count</h4>
 </div>
-<div class="card-group w-25">
+<div class="card-group">
     @foreach (Employee employee in Model.Employees)
     {
         <div class="card m-1 bg-primary text-white rounded-3">
@@ -14,10 +14,10 @@
             <div class="card-body">
                 <h5 class="card-title text-white">Name: @employee.Name @employee.Surname</h5>
                 <p class="card-text">Position: @employee.Position.Name</p>
-                <p class="card-text">Instagram Link: @employee.InstLink @employee.FaceLink @employee.LinkedLink</p>
-                <p class="card-text">FaceBook Link: @employee.FaceLink @employee.LinkedLink</p>
-                <p class="card-text">Linked-In Link: @employee.LinkedLink</p>
-                <p class="card-text">Twitter Link: @employee.TwitLink</p>
+                <p class="card-text">Instagram: <a>@employee.InstLink @(employee.InstLink != null ? "" : "N/A")</a></p>
+                <p class="card-text">Facebook: <a>@employee.FaceLink@(employee.FaceLink != null ? "" : "N/A")</a></p>
+                <p class="card-text">Twitter: <a>@employee.TwitLink@(employee.TwitLink != null ? "" : "N/A")</a></p>
+                <p class="card-text">Linked-In: <a>@employee.LinkedLink@(employee.LinkedLink != null ? "" : "N/A")</a></p>
             </div>
         </div>
     }

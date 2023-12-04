@@ -49,13 +49,13 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                 ModelState.AddModelError("Photo", "File Not supported");
                 return View(departmentVM);
             }
-            if (!departmentVM.Photo.ValiDataSize(12))
+            if (!departmentVM.Photo.ValiDataSize(10))
             {
                 ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
                 return View(departmentVM);
             }
 
-            string fileName = await departmentVM.Photo.CreateFile(_env.WebRootPath, "img");
+            string fileName = await departmentVM.Photo.CreateFileAsync(_env.WebRootPath, "img");
 
             Department department = new Department
             {
@@ -102,13 +102,13 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                     ModelState.AddModelError("Photo", "File Not supported");
                     return View(departmentVM);
                 }
-                if (!departmentVM.Photo.ValiDataSize(12))
+                if (!departmentVM.Photo.ValiDataSize(10))
                 {
                     ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
                     return View(departmentVM);
                 }
-                string newImg = await departmentVM.Photo.CreateFile(_env.WebRootPath, "img");
-                existed.ImgUrl.DeleteFile(_env.WebRootPath, "img");
+                string newImg = await departmentVM.Photo.CreateFileAsync(_env.WebRootPath, "img");
+                existed.ImgUrl.DeleteFileAsync(_env.WebRootPath, "img");
                 existed.ImgUrl = newImg;
             }
             existed.Name = departmentVM.Name;
@@ -122,7 +122,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             if (id <= 0) { return BadRequest(); }
             Department department = await _context.Departments.FirstOrDefaultAsync(b => b.Id == id);
             if (department == null) { return NotFound(); }
-            department.ImgUrl.DeleteFile(_env.WebRootPath, "img");
+            department.ImgUrl.DeleteFileAsync(_env.WebRootPath, "img");
 
             _context.Departments.Remove(department);
             _context.SaveChanges();
@@ -132,7 +132,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         public async Task<IActionResult> More(int id)
         {
             if (id <= 0) { return BadRequest(); }
-            Department department = await _context.Departments.Include(c => c.Employees).FirstOrDefaultAsync(c => c.Id == id);
+            Department department = await _context.Departments.Include(c => c.Employees).ThenInclude(p => p.Position).FirstOrDefaultAsync(c => c.Id == id);
             if (department == null) { return NotFound(); }
             return View(department);
         }

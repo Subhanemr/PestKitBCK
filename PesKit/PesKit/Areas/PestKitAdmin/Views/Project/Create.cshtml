@@ -3,7 +3,7 @@
 <div class="col-md-6 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Create Tag</h4>
+            <h4 class="card-title">Create Project</h4>
             <form class="forms-sample" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label asp-for="Name">Name</label>
@@ -11,17 +11,17 @@
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="MainPhoto">Image</label>
+                    <label asp-for="MainPhoto">Main Image</label>
                     <input asp-for="MainPhoto" accept="image/*" class="form-control" placeholder="MainPhoto">
                     <span asp-validation-for="MainPhoto" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="HoverPhoto">Image</label>
+                    <label asp-for="HoverPhoto">Hover Image</label>
                     <input asp-for="HoverPhoto" accept="image/*" class="form-control" placeholder="HoverPhoto">
                     <span asp-validation-for="HoverPhoto" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Photos">Image</label>
+                    <label asp-for="Photos">Other Images</label>
                     <input asp-for="Photos" accept="image/*" class="form-control" placeholder="MainPhoto">
                     <span asp-validation-for="Photos" class="text-danger"></span>
                 </div>

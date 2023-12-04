@@ -7,5 +7,6 @@ namespace PesKit.ViewModels
         public List<Blog> Blogs { get; set; }
         public List<Employee> Employees { get; set; }
         public List<Project> Projects { get; set; } 
+        public List<Product> Products { get; set; } 
     }
 }

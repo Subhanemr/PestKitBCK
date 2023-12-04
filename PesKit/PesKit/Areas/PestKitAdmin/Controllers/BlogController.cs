@@ -85,7 +85,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                 }
             }
 
-            string fileName = await blogVM.Photo.CreateFile(_env.WebRootPath, "img");
+            string fileName = await blogVM.Photo.CreateFileAsync(_env.WebRootPath, "img");
 
             Blog blog = new Blog
             {
@@ -107,9 +107,9 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         public async Task<IActionResult> Update(int id)
         {
             if (id <= 0) { return BadRequest(); }
-            Blog blog = await _context.Blogs.Include(c=>c.Tags).FirstOrDefaultAsync(b => b.Id == id);
-            if (blog == null) 
-                return NotFound(); 
+            Blog blog = await _context.Blogs.Include(c => c.Tags).FirstOrDefaultAsync(b => b.Id == id);
+            if (blog == null)
+                return NotFound();
             UpdateBlogVM blogVM = new UpdateBlogVM
             {
                 Title = blog.Title,
@@ -160,14 +160,14 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                     ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
                     return View(blogVM);
                 }
-                string newImg = await blogVM.Photo.CreateFile(_env.WebRootPath, "img");
-                existed.ImgUrl.DeleteFile(_env.WebRootPath, "img");
+                string newImg = await blogVM.Photo.CreateFileAsync(_env.WebRootPath, "img");
+                existed.ImgUrl.DeleteFileAsync(_env.WebRootPath, "img");
                 existed.ImgUrl = newImg;
             }
 
             List<BlogTag> colorToRemove = existed.Tags
-    .Where(BlogTag => !blogVM.TagIds.Contains(BlogTag.TagId))
-    .ToList();
+            .Where(BlogTag => !blogVM.TagIds.Contains(BlogTag.TagId))
+            .ToList();
             _context.BlogTags.RemoveRange(colorToRemove);
 
             List<BlogTag> colorToAdd = blogVM.TagIds
@@ -190,9 +190,9 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0) { return BadRequest(); }
-            Blog blog = await _context.Blogs.FirstOrDefaultAsync(b => b.Id == id);
+            Blog blog = await _context.Blogs.Include(b => b.Tags).FirstOrDefaultAsync(b => b.Id == id);
             if (blog == null) { return NotFound(); }
-            blog.ImgUrl.DeleteFile(_env.WebRootPath, "img");
+            blog.ImgUrl.DeleteFileAsync(_env.WebRootPath, "img");
 
 
             _context.Blogs.Remove(blog);
@@ -203,7 +203,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         public async Task<IActionResult> More(int id)
         {
             if (id <= 0) { return BadRequest(); }
-            Blog blog = await _context.Blogs.Include(c => c.Author).Include(c=> c.Tags).ThenInclude(c => c.Tag).FirstOrDefaultAsync(c => c.Id == id);
+            Blog blog = await _context.Blogs.Include(c => c.Author).Include(c => c.Tags).ThenInclude(c => c.Tag).FirstOrDefaultAsync(c => c.Id == id);
             if (blog == null) { return NotFound(); }
             return View(blog);
         }

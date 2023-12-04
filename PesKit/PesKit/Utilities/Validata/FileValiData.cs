@@ -16,7 +16,7 @@ namespace PesKit.Utilities.Validata
 
             return false;
         }
-        public static async Task<string> CreateFile(this IFormFile file, string root, params string[] folders)
+        public static async Task<string> CreateFileAsync(this IFormFile file, string root, params string[] folders)
         {
             string originalFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
             string guidBasedName = ExtractGuidFileName(originalFileName);
@@ -36,7 +36,7 @@ namespace PesKit.Utilities.Validata
             return finalFileName;
 
         }
-        public static async void DeleteFile(this string fileName, string root, params string[] folders)
+        public static async void DeleteFileAsync(this string fileName, string root, params string[] folders)
         {
             string path = root;
             for (int i = 0;i< folders.Length;i++)

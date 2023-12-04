@@ -75,14 +75,14 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             ProjectImage mainimage = new ProjectImage
             {
                 IsPrimary = true,
-                Url = await projectVM.MainPhoto.CreateFile(_env.WebRootPath, "img")
+                Url = await projectVM.MainPhoto.CreateFileAsync(_env.WebRootPath, "img")
             };
 
 
             ProjectImage hoverimage = new ProjectImage
             {
                 IsPrimary = false,
-                Url = await projectVM.HoverPhoto.CreateFile(_env.WebRootPath, "img")
+                Url = await projectVM.HoverPhoto.CreateFileAsync(_env.WebRootPath, "img")
             };
 
             Project project = new Project
@@ -110,7 +110,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                 project.ProjectImages.Add(new ProjectImage
                 {
                     IsPrimary = null,
-                    Url = await photo.CreateFile(_env.WebRootPath, "img")
+                    Url = await photo.CreateFileAsync(_env.WebRootPath, "img")
                 });
             }
 
@@ -171,10 +171,10 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
 
             if (projectVM.MainPhoto is not null)
             {
-                string fileName = await projectVM.MainPhoto.CreateFile(_env.WebRootPath, "img");
+                string fileName = await projectVM.MainPhoto.CreateFileAsync(_env.WebRootPath, "img");
                 ProjectImage prMain = existed.ProjectImages.FirstOrDefault(pi => pi.IsPrimary == true);
 
-                prMain.Url.DeleteFile(_env.WebRootPath, "img");
+                prMain.Url.DeleteFileAsync(_env.WebRootPath, "img");
                 _context.ProjectImages.Remove(prMain);
 
                 existed.ProjectImages.Add(new ProjectImage
@@ -186,10 +186,10 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
 
             if (projectVM.HoverPhoto is not null)
             {
-                string fileName = await projectVM.HoverPhoto.CreateFile(_env.WebRootPath, "img");
-                ProjectImage prMain = existed.ProjectImages.FirstOrDefault(pi => pi.IsPrimary == true);
+                string fileName = await projectVM.HoverPhoto.CreateFileAsync(_env.WebRootPath, "img");
+                ProjectImage prMain = existed.ProjectImages.FirstOrDefault(pi => pi.IsPrimary == false);
 
-                prMain.Url.DeleteFile(_env.WebRootPath, "img");
+                prMain.Url.DeleteFileAsync(_env.WebRootPath, "img");
                 _context.ProjectImages.Remove(prMain);
 
                 existed.ProjectImages.Add(new ProjectImage
@@ -207,7 +207,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
 
             foreach (ProjectImage image in remove)
             {
-                image.Url.DeleteFile(_env.WebRootPath, "img");
+                image.Url.DeleteFileAsync(_env.WebRootPath, "img");
                 existed.ProjectImages.Remove(image);
             }
 
@@ -232,7 +232,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                     existed.ProjectImages.Add(new ProjectImage
                     {
                         IsPrimary = null,
-                        Url = await photo.CreateFile(_env.WebRootPath, "img")
+                        Url = await photo.CreateFileAsync(_env.WebRootPath, "img")
                     });
                 }
             }
@@ -258,7 +258,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             if (project is null) { return NotFound(); };
             foreach (ProjectImage image in project.ProjectImages)
             {
-                image.Url.DeleteFile(_env.WebRootPath, "img");
+                image.Url.DeleteFileAsync(_env.WebRootPath, "img");
             }
 
             List<ProjectImage> remove = await _context.ProjectImages.Where(p => p.ProjectId == id).ToListAsync();

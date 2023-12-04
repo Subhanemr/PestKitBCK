@@ -1,0 +1,75 @@
+﻿@model List<CartItemVM>
+@{
+    decimal total = 0;
+}
+
+<!-- Cart Offcanvas Start -->
+<div class="offcanvas offcanvas-end" id="minicart">
+    <div class="offcanvas-header">
+        <h1 class="offcanvas-title">Cart</h1>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+
+        <ul>
+            @foreach (CartItemVM item in Model)
+            {
+                total += item.SubTotal;
+                <li class="cart_product">
+                    <div>
+                        <img src="~/img/@item.Img" class="w-25">
+                        <p>@item.Name</p>
+                        <p>@item.Count x $@item.Price</p>
+                    </div>
+                    <a class="delete-button text-danger" asp-action="DeleteItem" asp-controller="Cart" asp-route-id="@item.Id"><i class="fas fa-trash fa-fw"></i></a>
+                </li>
+            }
+        </ul>
+        <p class="mx-4 fw-bold">Total: $@total</p>
+    </div>
+    <a class="btn btn-dark w-75 mb-5 mx-5" asp-action="Index" asp-controller="Cart">View Cart</a>
+</div>
+<!-- Cart Offcanvas End -->
+<!-- Navbar Start -->
+<div class="container-fluid bg-dark">
+    <div class="container">
+        <nav class="navbar navbar-dark navbar-expand-lg py-lg-0">
+            <a asp-action="Index" asp-controller="Home" class="navbar-brand">
+                <h1 class="text-primary mb-0 display-5">
+                    Pest<span class="text-white">Kit</span><i class="fa fa-spider text-primary ms-2"></i>
+                </h1>
+            </a>
+            <button class="navbar-toggler bg-primary" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars text-dark"></span>
+            </button>
+            <div class="collapse navbar-collapse me-n3" id="navbarCollapse">
+                <div class="navbar-nav ms-auto">
+                    <a asp-action="Index" asp-controller="Home" class="nav-item nav-link">Home</a>
+                    <a asp-action="About" asp-controller="Home" class="nav-item nav-link">About</a>
+                    <a class="nav-item nav-link">Services</a>
+                    <a asp-controller="Project" asp-action="Index" class="nav-item nav-link">Projects</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                        <div class="dropdown-menu m-0 bg-primary">
+                            <a href="price.html" class="dropdown-item">Pricing Plan</a>
+                            <a asp-controller="Department" asp-action="Index" class="dropdown-item">Our Departments</a>
+                            <a asp-controller="Blog" asp-action="Index" class="dropdown-item">Blog Post</a>
+                            <a asp-action="Index" asp-controller="Employee" class="dropdown-item">Team Members</a>
+                            <a asp-action="Index" asp-controller="Product" class="dropdown-item">Products</a>
+                            <a href="testimonial.html" class="dropdown-item">Testimonial</a>
+                            <a href="404.html" class="dropdown-item">404 Page</a>
+                        </div>
+                    </div>
+                    <a href="contact.html" class="nav-item nav-link">Contact</a>
+                    <a href="javascript:;" class="nav-item nav-link minicart-btn toolbar-btn"
+                       data-bs-toggle="offcanvas" data-bs-target="#minicart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="quantity">@Model.Count</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+<!-- Navbar End -->

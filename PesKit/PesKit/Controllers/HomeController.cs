@@ -19,9 +19,10 @@ namespace PesKit.Controllers
             List<Blog> blog = await _context.Blogs.Include(b => b.Author).ToListAsync();
             List<Employee> employees = await _context.Employees.Include(e => e.Position).Take(4).ToListAsync();
             List<Project> projects = await _context.Projects.Include(pi => pi.ProjectImages).ToListAsync();
+            List<Product> products = await _context.Products.ToListAsync();
 
 
-            HomeVM homeVM = new HomeVM { Blogs = blog, Employees = employees, Projects = projects };
+            HomeVM homeVM = new HomeVM { Blogs = blog, Employees = employees, Projects = projects, Products = products };
             return View(homeVM);
         }
 

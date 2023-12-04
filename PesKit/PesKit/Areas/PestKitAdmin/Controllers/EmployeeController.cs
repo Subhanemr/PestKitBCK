@@ -63,7 +63,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                 return View(employeeVM);
             }
 
-            string fileName = await employeeVM.Photo.CreateFile(_env.WebRootPath, "img");
+            string fileName = await employeeVM.Photo.CreateFileAsync(_env.WebRootPath, "img");
 
             Employee employee = new Employee
             {
@@ -110,7 +110,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(int id, UpdateEmployeeVM employeeVM)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 employeeVM.Departments = await _context.Departments.ToListAsync();
                 employeeVM.Positions = await _context.Positions.ToListAsync();
@@ -134,8 +134,8 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                     ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
                     return View(employeeVM);
                 }
-                string newImg = await employeeVM.Photo.CreateFile(_env.WebRootPath, "img");
-                existed.ImgUrl.DeleteFile(_env.WebRootPath, "img");
+                string newImg = await employeeVM.Photo.CreateFileAsync(_env.WebRootPath, "img");
+                existed.ImgUrl.DeleteFileAsync(_env.WebRootPath, "img");
                 existed.ImgUrl = newImg;
             }
             existed.Name = employeeVM.Name;
@@ -158,11 +158,11 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
 
             Employee employee = await _context.Employees.SingleOrDefaultAsync(e => e.Id == id);
             if (employee == null) { return NotFound(); }
-            employee.ImgUrl.DeleteFile(_env.WebRootPath, "img");
+            employee.ImgUrl.DeleteFileAsync(_env.WebRootPath, "img");
 
 
             _context.Employees.Remove(employee);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
