@@ -70,5 +70,14 @@ namespace PesKit.Utilities.Validata
             }
             return string.Empty;
         }
+
+        public static string Capitalize(this string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return text;
+            }
+            return char.ToUpper(text[0]) + text.Substring(0).ToLower();
+        }
     }
 }

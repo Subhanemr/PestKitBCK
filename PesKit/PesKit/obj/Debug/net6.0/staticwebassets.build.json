@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "2cgAs+YuRzSm+vxwWXBGEaXo3byLTDK/iR56bcka/g4=",
+  "Hash": "nyZKGNtC0MAknmZs8DGr2LM0MK3LJ79tXVtoyq2WELA=",
   "Source": "PesKit",
   "BasePath": "_content/PesKit",
   "Mode": "Default",
@@ -1785,6 +1785,23 @@
       "OriginalItemSpec": "wwwroot\\img\\2414823f-9cb5-49b9-b978-a54fd38a4548.png"
     },
     {
+      "Identity": "C:\\Users\\T x\\Desktop\\PesKit\\PesKit\\PesKit\\wwwroot\\img\\24177813-b809-429f-909e-118c1bad27e2.jpg",
+      "SourceId": "PesKit",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\T x\\Desktop\\PesKit\\PesKit\\PesKit\\wwwroot\\",
+      "BasePath": "_content/PesKit",
+      "RelativePath": "img/24177813-b809-429f-909e-118c1bad27e2.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\24177813-b809-429f-909e-118c1bad27e2.jpg"
+    },
+    {
       "Identity": "C:\\Users\\T x\\Desktop\\PesKit\\PesKit\\PesKit\\wwwroot\\img\\2777c6cb-31ff-4776-b82c-78e53970025f.jpg",
       "SourceId": "PesKit",
       "SourceType": "Discovered",
@@ -2361,6 +2378,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\img\\8fdeb910-cade-4968-aebd-284f74fa12de.png"
+    },
+    {
+      "Identity": "C:\\Users\\T x\\Desktop\\PesKit\\PesKit\\PesKit\\wwwroot\\img\\94c9d276-319c-4b3f-b5c1-7f6f3c7a2311.jpg",
+      "SourceId": "PesKit",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\T x\\Desktop\\PesKit\\PesKit\\PesKit\\wwwroot\\",
+      "BasePath": "_content/PesKit",
+      "RelativePath": "img/94c9d276-319c-4b3f-b5c1-7f6f3c7a2311.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\94c9d276-319c-4b3f-b5c1-7f6f3c7a2311.jpg"
     },
     {
       "Identity": "C:\\Users\\T x\\Desktop\\PesKit\\PesKit\\PesKit\\wwwroot\\img\\95ae4473-5d6d-4df8-b903-e721a9d77ec7.jpg",
