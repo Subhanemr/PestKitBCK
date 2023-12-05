@@ -1,20 +1,30 @@
-﻿<!-- Register Start -->
+﻿@model LoginVM
+<!-- Register Start -->
 <div class="container-fluid py-5">
     <div class="container">
         <div class="row">
-            <div class="col-4 offset-4">
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="text" class="form-control" id="email">
+            <form method="post">
+                <div class="col-4 offset-4">
+                    <div class="mb-3">
+                        <label asp-for="UserNameOrEmail" class="form-label">Username Or Email</label>
+                        <input asp-for="UserNameOrEmail" class="form-control" placeholder="Username or Email">
+                        <span class="text-danger" asp-validation-for="UserNameOrEmail"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">Password</label>
+                        <input asp-for="Password" class="form-control" placeholder="Password">
+                        <span class="text-danger" asp-validation-for="Password"></span>
+
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="IsRemembered" class="form-label">Remember me</label>
+                        <input asp-for="IsRemembered" class="m-1">
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-warning w-100">Login</button>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="Password" class="form-label">Password</label>
-                    <input type="text" class="form-control" id="Password">
-                </div>
-                <div class="mb-3">
-                    <button class="btn btn-warning w-100">Login</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>

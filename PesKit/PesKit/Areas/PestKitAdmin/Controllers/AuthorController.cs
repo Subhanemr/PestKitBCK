@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PesKit.Areas.PestKitAdmin.ViewModels;
 using PesKit.DAL;
@@ -7,6 +8,7 @@ using PesKit.Models;
 namespace PesKit.Areas.PestKitAdmin.Controllers
 {
     [Area("PestKitAdmin")]
+    [Authorize(Roles = "Admin,Moderator")]
     public class AuthorController : Controller
     {
         private readonly AppDbContext _context;
@@ -15,11 +17,15 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         {
             _context = context;
         }
+
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index()
         {
             List<Author> authors = await _context.Author.Include(a => a.Blogs).ToListAsync();
             return View(authors);
         }
+
+        [Authorize(Roles = "Admin,Moderator")]
         public IActionResult Create()
         {
             return View();
@@ -37,10 +43,10 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                 ModelState.AddModelError("Name", "A Category is available");
                 return View();
             }
-            Author author = new Author 
-            { 
+            Author author = new Author
+            {
                 Name = authorVM.Name,
-                Surname=authorVM.Surname
+                Surname = authorVM.Surname
             };
             await _context.Author.AddAsync(author);
             await _context.SaveChangesAsync();
@@ -48,12 +54,13 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Update(int id)
         {
-            if(id <= 0) { return BadRequest(); }
+            if (id <= 0) { return BadRequest(); }
             Author author = await _context.Author.FirstOrDefaultAsync(c => c.Id == id);
             if (author == null) { return NotFound(); }
-            CreateUpdateAuthorVM authorVM = new CreateUpdateAuthorVM {Name= author.Name, Surname=author.Surname };
+            CreateUpdateAuthorVM authorVM = new CreateUpdateAuthorVM { Name = author.Name, Surname = author.Surname };
 
             return View(authorVM);
         }
@@ -76,13 +83,14 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
-            if(id < 0) { return BadRequest(); }
-            
+            if (id < 0) { return BadRequest(); }
+
             Author author = await _context.Author.FirstOrDefaultAsync(c => c.Id == id);
-            if(author == null) { return NotFound(); }
-            _context.Author.Remove(author); 
+            if (author == null) { return NotFound(); }
+            _context.Author.Remove(author);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
@@ -90,7 +98,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         public async Task<IActionResult> More(int id)
         {
             if (id <= 0) { return BadRequest(); }
-            Author author = _context.Author.Include(c=> c.Blogs).FirstOrDefault(c => c.Id == id);
+            Author author = _context.Author.Include(c => c.Blogs).FirstOrDefault(c => c.Id == id);
             if (author == null) { return NotFound(); }
             return View(author);
         }

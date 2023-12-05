@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PesKit.Areas.PestKitAdmin.ViewModels;
 using PesKit.DAL;
@@ -8,6 +9,7 @@ using PesKit.Utilities.Validata;
 namespace PesKit.Areas.PestKitAdmin.Controllers
 {
     [Area("PestKitAdmin")]
+    [Authorize(Roles = "Admin,Moderator")]
     public class EmployeeController : Controller
     {
         private readonly AppDbContext _context;
@@ -18,20 +20,26 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             _context = context;
             _env = env;
         }
+
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index()
         {
             List<Employee> employees = await _context.Employees.Include(e => e.Department).Include(e => e.Position).ToListAsync();
             return View(employees);
         }
+
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Create()
         {
-            CreateEmployeeVM employeeVM = new CreateEmployeeVM { 
-            Departments = await _context.Departments.ToListAsync(),
-            Positions = await _context.Positions.ToListAsync()
+            CreateEmployeeVM employeeVM = new CreateEmployeeVM
+            {
+                Departments = await _context.Departments.ToListAsync(),
+                Positions = await _context.Positions.ToListAsync()
             };
 
             return View(employeeVM);
         }
+
         [HttpPost]
         public async Task<IActionResult> Create(CreateEmployeeVM employeeVM)
         {
@@ -84,6 +92,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Update(int id)
         {
             if (id <= 0) { return BadRequest(); }
@@ -102,7 +111,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                 ImgUrl = employee.ImgUrl,
                 Departments = await _context.Departments.ToListAsync(),
                 Positions = await _context.Positions.ToListAsync(),
-        };
+            };
 
             return View(employeeVM);
         }
@@ -152,6 +161,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0) { return BadRequest(); }
@@ -166,6 +176,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> More(int id)
         {
             if (id <= 0) { return BadRequest(); };

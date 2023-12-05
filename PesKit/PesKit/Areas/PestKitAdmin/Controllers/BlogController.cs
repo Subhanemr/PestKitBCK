@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PesKit.Areas.PestKitAdmin.ViewModels;
@@ -9,6 +10,7 @@ using PesKit.Utilities.Validata;
 namespace PesKit.Areas.PestKitAdmin.Controllers
 {
     [Area("PestKitAdmin")]
+    [Authorize(Roles = "Admin,Moderator")]
     public class BlogController : Controller
     {
         private readonly AppDbContext _context;
@@ -19,11 +21,15 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             _context = context;
             _env = env;
         }
+
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index()
         {
             List<Blog> blogs = await _context.Blogs.Include(b => b.Author).ToListAsync();
             return View(blogs);
         }
+
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Create()
         {
             CreateBlogVM blogVM = new CreateBlogVM
@@ -104,6 +110,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Update(int id)
         {
             if (id <= 0) { return BadRequest(); }
@@ -187,6 +194,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0) { return BadRequest(); }
@@ -200,6 +208,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> More(int id)
         {
             if (id <= 0) { return BadRequest(); }

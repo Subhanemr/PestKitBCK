@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PesKit.Areas.PestKitAdmin.ViewModels;
 using PesKit.DAL;
@@ -7,6 +8,7 @@ using PesKit.Models;
 namespace PesKit.Areas.PestKitAdmin.Controllers
 {
     [Area("PestKitAdmin")]
+    [Authorize(Roles = "Admin,Moderator")]
     public class SlideController : Controller
     {
         private readonly AppDbContext _context;
@@ -17,11 +19,15 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             _context = context;
             _env = env;
         }
+
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index()
         {
             List<Slide> slides = await _context.Slides.Include(s => s.Photo).ToListAsync();
             return View(slides);
         }
+
+        [Authorize(Roles = "Admin,Moderator")]
         public IActionResult Create()
         {
             return View();
@@ -31,7 +37,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         {
             if (!ModelState.IsValid) { return View(slideVM); }
             return RedirectToAction(nameof(Index));
-            
+
 
         }
     }

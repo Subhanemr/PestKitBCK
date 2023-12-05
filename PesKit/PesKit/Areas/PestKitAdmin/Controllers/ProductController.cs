@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PesKit.Areas.PestKitAdmin.ViewModels;
 using PesKit.DAL;
@@ -8,6 +9,7 @@ using PesKit.Utilities.Validata;
 namespace PesKit.Areas.PestKitAdmin.Controllers
 {
     [Area("PestKitAdmin")]
+    [Authorize(Roles = "Admin,Moderator")]
     public class ProductController : Controller
     {
         private readonly AppDbContext _context;
@@ -19,11 +21,14 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             _env = env;
         }
 
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index()
         {
             List<Product> products = await _context.Products.ToListAsync();
             return View(products);
         }
+
+        [Authorize(Roles = "Admin,Moderator")]
         public IActionResult Create()
         {
             return View();
@@ -68,6 +73,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Update(int id)
         {
             if (id <= 0) return BadRequest();
@@ -82,18 +88,19 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             };
             return View(productVM);
         }
+
         [HttpPost]
         public async Task<IActionResult> Update(int id, UpdateProductVM productVM)
         {
             if (!ModelState.IsValid) return View(productVM);
-            bool result = await _context.Products.AnyAsync(p => p.Name.Trim().ToLower() == productVM.Name.Trim().ToLower()&& p.Id != id);
+            bool result = await _context.Products.AnyAsync(p => p.Name.Trim().ToLower() == productVM.Name.Trim().ToLower() && p.Id != id);
             if (result)
             {
                 ModelState.AddModelError("Name", "A Category is available");
                 return View(productVM);
             }
             Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
-            if(productVM.Photo != null)
+            if (productVM.Photo != null)
             {
                 if (!productVM.Photo.ValiDataType())
                 {
@@ -120,7 +127,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0) { return BadRequest(); }
@@ -135,6 +142,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> More(int id)
         {
             if (id <= 0) { return BadRequest(); };

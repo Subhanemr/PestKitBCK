@@ -22,10 +22,10 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>{
 
 var app = builder.Build();
 
-app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 app.UseAuthentication();
+app.UseStaticFiles();
 
 app.MapControllerRoute(
     "Default",

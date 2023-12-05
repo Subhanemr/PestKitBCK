@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PesKit.Areas.PestKitAdmin.ViewModels;
 using PesKit.DAL;
@@ -8,6 +9,7 @@ using PesKit.Utilities.Validata;
 namespace PesKit.Areas.PestKitAdmin.Controllers
 {
     [Area("PestKitAdmin")]
+    [Authorize(Roles = "Admin,Moderator")]
     public class DepartmentController : Controller
     {
         private readonly AppDbContext _context;
@@ -18,11 +20,15 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             _context = context;
             _env = env;
         }
+
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index()
         {
             List<Department> department = await _context.Departments.Include(d => d.Employees).ToListAsync();
             return View(department);
         }
+
+        [Authorize(Roles = "Admin,Moderator")]
         public IActionResult Create()
         {
             return View();
@@ -63,12 +69,13 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                 ImgUrl = fileName,
             };
 
-            await _context.Departments .AddAsync(department);
+            await _context.Departments.AddAsync(department);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Update(int id)
         {
             if (id <= 0) { return BadRequest(); }
@@ -76,7 +83,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             if (department == null) { return NotFound(); }
             UpdateDepartmentVM departmentVM = new UpdateDepartmentVM
             {
-                Name= department.Name,
+                Name = department.Name,
                 ImgUrl = department.ImgUrl
             };
 
@@ -117,6 +124,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0) { return BadRequest(); }
@@ -129,6 +137,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> More(int id)
         {
             if (id <= 0) { return BadRequest(); }

@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PesKit.DAL;
 
 namespace PesKit.Areas.PesKitAdmin.Controllers
 {
     [Area("PestKitAdmin")]
+    [Authorize(Roles ="Admin,Moderator")]
     public class HomeController : Controller
     {
         private readonly AppDbContext _context;
@@ -12,6 +14,8 @@ namespace PesKit.Areas.PesKitAdmin.Controllers
         {
             _context = context;
         }
+
+        [Authorize(Roles ="Admin,Moderator")]
         public IActionResult Index()
         {
             return View();

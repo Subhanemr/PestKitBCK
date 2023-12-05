@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PesKit.Areas.PestKitAdmin.ViewModels;
 using PesKit.DAL;
@@ -7,6 +8,7 @@ using PesKit.Models;
 namespace PesKit.Areas.PestKitAdmin.Controllers
 {
     [Area("PestKitAdmin")]
+    [Authorize(Roles = "Admin,Moderator")]
     public class TagController : Controller
     {
         private readonly AppDbContext _context;
@@ -15,11 +17,15 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         {
             _context = context;
         }
+
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index()
         {
             List<Tag> tags = await _context.Tags.Include(c => c.BlogTags).ThenInclude(c => c.Blog).ToListAsync();
             return View(tags);
         }
+
+        [Authorize(Roles = "Admin,Moderator")]
         public IActionResult Create()
         {
             return View();
@@ -30,7 +36,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         {
             if (!ModelState.IsValid) { return View(tagVM); }
             bool result = _context.Tags.Any(t => t.Name.Trim().ToLower() == tagVM.Name.Trim().ToLower());
-            if (result) 
+            if (result)
             {
                 ModelState.AddModelError("Name", "A Tag is available");
                 return View();
@@ -42,6 +48,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0) { return BadRequest(); }
@@ -53,6 +60,8 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> More(int id)
         {
             if (id <= 0) { return BadRequest(); }
@@ -61,6 +70,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             return View(tag);
         }
 
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Update(int id)
         {
             if (id <= 0) { return BadRequest(); }

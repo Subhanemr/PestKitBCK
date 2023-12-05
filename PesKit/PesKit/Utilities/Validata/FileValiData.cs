@@ -77,7 +77,7 @@ namespace PesKit.Utilities.Validata
             {
                 return text;
             }
-            return char.ToUpper(text[0]) + text.Substring(0).ToLower();
+            return char.ToUpper(text[0]) + text.Substring(1).ToLower();
         }
     }
 }
