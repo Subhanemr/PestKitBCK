@@ -174,6 +174,10 @@ namespace PesKit.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Img")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -246,7 +250,7 @@ namespace PesKit.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Author", (string)null);
+                    b.ToTable("Author");
                 });
 
             modelBuilder.Entity("PesKit.Models.Blog", b =>
@@ -282,7 +286,7 @@ namespace PesKit.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Blogs", (string)null);
+                    b.ToTable("Blogs");
                 });
 
             modelBuilder.Entity("PesKit.Models.BlogTag", b =>
@@ -305,7 +309,7 @@ namespace PesKit.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("BlogTags", (string)null);
+                    b.ToTable("BlogTags");
                 });
 
             modelBuilder.Entity("PesKit.Models.Department", b =>
@@ -326,7 +330,7 @@ namespace PesKit.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments", (string)null);
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("PesKit.Models.Employee", b =>
@@ -373,7 +377,7 @@ namespace PesKit.Migrations
 
                     b.HasIndex("PositionId");
 
-                    b.ToTable("Employees", (string)null);
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("PesKit.Models.Position", b =>
@@ -390,7 +394,7 @@ namespace PesKit.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Positions", (string)null);
+                    b.ToTable("Positions");
                 });
 
             modelBuilder.Entity("PesKit.Models.Product", b =>
@@ -418,7 +422,7 @@ namespace PesKit.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("PesKit.Models.Project", b =>
@@ -435,7 +439,7 @@ namespace PesKit.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("PesKit.Models.ProjectImage", b =>
@@ -460,7 +464,7 @@ namespace PesKit.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("ProjectImages", (string)null);
+                    b.ToTable("ProjectImages");
                 });
 
             modelBuilder.Entity("PesKit.Models.Slide", b =>
@@ -481,7 +485,7 @@ namespace PesKit.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Slides", (string)null);
+                    b.ToTable("Slides");
                 });
 
             modelBuilder.Entity("PesKit.Models.SlideImage", b =>
@@ -506,7 +510,7 @@ namespace PesKit.Migrations
 
                     b.HasIndex("SlideId");
 
-                    b.ToTable("SlideImages", (string)null);
+                    b.ToTable("SlideImages");
                 });
 
             modelBuilder.Entity("PesKit.Models.Tag", b =>
@@ -523,7 +527,7 @@ namespace PesKit.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tags", (string)null);
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

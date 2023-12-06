@@ -13,12 +13,14 @@ namespace PesKit.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IWebHostEnvironment _env;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager, IWebHostEnvironment env)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _env = env;
         }
 
 
@@ -122,6 +124,53 @@ namespace PesKit.Controllers
                     });
                 }
             }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> EditUser()
+        {
+            AppUser appUser = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            EditUserVM editUserVM = new EditUserVM
+            {
+                Name = appUser.Name,
+                Surname = appUser.Surname,
+                UserName = appUser.Name,
+                Img = appUser.Img,
+            };
+            return View(editUserVM);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserVM editUserVM)
+        {
+            if (!ModelState.IsValid) return View(editUserVM);
+            AppUser appUser = await _userManager.FindByNameAsync(User.Identity.Name);
+            if (appUser == null) return View(editUserVM);
+            appUser.Name = editUserVM.Name.Capitalize();
+            appUser.Surname = editUserVM.Surname.Capitalize();
+            appUser.UserName = editUserVM.UserName;
+            if (editUserVM.Photo != null)
+            {
+                if (!editUserVM.Photo.ValiDataType())
+                {
+                    ModelState.AddModelError("Photo", "File Not supported");
+                    return View(editUserVM);
+                }
+
+                if (!editUserVM.Photo.ValiDataSize(10))
+                {
+                    ModelState.AddModelError("Photo", "Image should not be larger than 10 mb");
+                    return View(editUserVM);
+                }
+                string fileName = await editUserVM.Photo.CreateFileAsync(_env.WebRootPath, "img");
+                appUser.Img.DeleteFileAsync(_env.WebRootPath, "img");
+                appUser.Img = fileName;
+            }
+
+            await _userManager.UpdateAsync(appUser);
+            await _signInManager.SignOutAsync();
+            await _signInManager.SignInAsync(appUser, isPersistent: false);
 
             return RedirectToAction("Index", "Home");
         }

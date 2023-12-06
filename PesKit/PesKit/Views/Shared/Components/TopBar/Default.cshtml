@@ -1,0 +1,57 @@
+﻿    <!-- Topbar Start -->
+<div class="container-fluid topbar-top bg-primary">
+    <div class="container">
+        <div class="d-flex justify-content-between topbar py-2">
+            <div class="d-flex align-items-center flex-shrink-0 topbar-info">
+                <a href="#" class="me-4 text-secondary"><i class="fas fa-map-marker-alt me-2 text-dark"></i>123 Street, CA, USA</a>
+                <a href="#" class="me-4 text-secondary"><i class="fas fa-phone-alt me-2 text-dark"></i>+01234567890</a>
+                <a href="#" class="text-secondary"><i class="fas fa-envelope me-2 text-dark"></i>Example@gmail.com</a>
+            </div>
+            <div class="text-end pe-4 me-4 border-end border-dark search-btn">
+                <div class="search-form">
+                    <form method="post" action="index.html">
+                        <div class="form-group">
+                            <div class="d-flex">
+                                <input type="search" class="form-control border-0 rounded-pill" name="search-input"
+                                       value="" placeholder="Search Here" required="" />
+                                <button type="submit" value="Search Now!" class="btn">
+                                    <i class="fa fa-search text-dark"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    <a href="#" class="me-4"><i class="fas fa-user-circle"></i></a>
+                </button>
+                <ul class="dropdown-menu">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>
+                            <div class="d-flex">
+                                <img src="~/img//@Model.Img" style="width:25px;" class="m-1">
+                                <a class="dropdown-item" asp-action="EditUser" asp-controller="Account">@User.Identity.Name</a>
+                            </div>
+                        </li>
+                        <li><a class="dropdown-item" asp-action="LogOut" asp-controller="Account" asp-route-returnturl="@Context.Request.Path.Value">Logout</a></li>
+                        if (User.IsInRole(UserRoles.Admin.ToString()) || User.IsInRole(UserRoles.Moderator.ToString()))
+                        {
+                            <li><a class="dropdown-item" asp-action="Index" asp-controller="Home" asp-area="PestKitAdmin">Admin Panel</a></li>
+                        }
+                    }
+                    else
+                    {
+                        <li><a class="dropdown-item" asp-action="Login" asp-controller="Account" asp-route-returnturl="@Context.Request.Path.Value">Login</a></li>
+                        <li><a class="dropdown-item" asp-action="Register" asp-controller="Account" asp-route-returnturl="@Context.Request.Path.Value">Register</a></li>
+                    }
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Topbar End -->

@@ -282,7 +282,8 @@
 
 <body>
     @await Html.PartialAsync("SpinerBar/_SpinerBarPartialView")
-    @await Html.PartialAsync("TopBar/_TopBarPartialView")
+    
+    @await Component.InvokeAsync("TopBar")
     @* @await Html.PartialAsync("Navbar/_NavBarPartialView") *@
     @await Component.InvokeAsync("NavBar")
     @RenderBody()
