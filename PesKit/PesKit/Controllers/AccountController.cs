@@ -123,7 +123,7 @@ namespace PesKit.Controllers
                 }
             }
 
-            return RedirectToAction("index", "Home");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

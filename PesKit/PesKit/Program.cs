@@ -23,8 +23,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>{
 var app = builder.Build();
 
 app.UseRouting();
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 app.UseStaticFiles();
 
 app.MapControllerRoute(

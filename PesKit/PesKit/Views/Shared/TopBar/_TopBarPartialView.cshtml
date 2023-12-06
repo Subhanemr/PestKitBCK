@@ -34,7 +34,7 @@
                         <li><a class="dropdown-item" asp-action="LogOut" asp-controller="Account" asp-route-returnturl="@Context.Request.Path.Value">Logout</a></li>
                         if (User.IsInRole(UserRoles.Admin.ToString())|| User.IsInRole(UserRoles.Moderator.ToString()))
                         {
-                            <li><a class="dropdown-item" asp-action="Index" asp-controller="Home" asp-area="PestKitAdmin" >Admin Panel</a></li>
+                            <li><a class="dropdown-item" asp-action="Index" asp-controller="Home" asp-area="PestKitAdmin">Admin Panel</a></li>
                         }
                     }
                     else
