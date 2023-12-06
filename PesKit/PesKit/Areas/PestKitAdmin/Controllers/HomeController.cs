@@ -6,6 +6,7 @@ namespace PesKit.Areas.PesKitAdmin.Controllers
 {
     [Area("PestKitAdmin")]
     [Authorize(Roles = "Admin,Moderator")]
+    [AutoValidateAntiforgeryToken]
 
     public class HomeController : Controller
     {
@@ -17,6 +18,7 @@ namespace PesKit.Areas.PesKitAdmin.Controllers
         }
 
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public IActionResult Index()
         {
             return View();

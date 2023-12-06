@@ -9,6 +9,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
 {
     [Area("PestKitAdmin")]
     [Authorize(Roles = "Admin,Moderator")]
+    [AutoValidateAntiforgeryToken]
     public class SlideController : Controller
     {
         private readonly AppDbContext _context;
@@ -21,6 +22,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         }
 
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Index()
         {
             List<Slide> slides = await _context.Slides.Include(s => s.Photo).ToListAsync();
@@ -28,6 +30,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         }
 
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public IActionResult Create()
         {
             return View();

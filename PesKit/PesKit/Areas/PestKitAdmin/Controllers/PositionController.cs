@@ -9,6 +9,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
 {
     [Area("PestKitAdmin")]
     [Authorize(Roles = "Admin,Moderator")]
+    [AutoValidateAntiforgeryToken]
     public class PositionController : Controller
     {
         private readonly AppDbContext _context;
@@ -19,6 +20,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         }
 
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Index()
         {
             List<Position> list = await _context.Positions.Include(p => p.Employees).ToListAsync();
@@ -26,6 +28,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         }
 
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public IActionResult Create()
         {
             return View();
@@ -51,6 +54,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         }
 
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(int id)
         {
             if (id <= 0) return BadRequest();
@@ -84,6 +88,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0) return BadRequest();
@@ -95,6 +100,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         }
 
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> More(int id)
         {
             if (id <= 0) return BadRequest();

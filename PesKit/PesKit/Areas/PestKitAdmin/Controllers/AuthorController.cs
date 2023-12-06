@@ -9,6 +9,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
 {
     [Area("PestKitAdmin")]
     [Authorize(Roles = "Admin,Moderator")]
+    [AutoValidateAntiforgeryToken]
     public class AuthorController : Controller
     {
         private readonly AppDbContext _context;
@@ -19,6 +20,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         }
 
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Index()
         {
             List<Author> authors = await _context.Author.Include(a => a.Blogs).ToListAsync();
@@ -55,6 +57,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         }
 
         [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(int id)
         {
             if (id <= 0) { return BadRequest(); }
@@ -84,6 +87,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             if (id < 0) { return BadRequest(); }
@@ -94,7 +98,8 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize(Roles = "Admin,Moderator")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> More(int id)
         {
             if (id <= 0) { return BadRequest(); }
