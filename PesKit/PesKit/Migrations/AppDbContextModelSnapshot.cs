@@ -253,6 +253,41 @@ namespace PesKit.Migrations
                     b.ToTable("Author");
                 });
 
+            modelBuilder.Entity("PesKit.Models.BasketItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("BasketItems");
+                });
+
             modelBuilder.Entity("PesKit.Models.Blog", b =>
                 {
                     b.Property<int>("Id")
@@ -378,6 +413,19 @@ namespace PesKit.Migrations
                     b.HasIndex("PositionId");
 
                     b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("PesKit.Models.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("PesKit.Models.Position", b =>
@@ -581,6 +629,31 @@ namespace PesKit.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PesKit.Models.BasketItem", b =>
+                {
+                    b.HasOne("PesKit.Models.AppUser", "AppUser")
+                        .WithMany("BasketItems")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PesKit.Models.Order", "Order")
+                        .WithMany("BasketItems")
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("PesKit.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("PesKit.Models.Blog", b =>
                 {
                     b.HasOne("PesKit.Models.Author", "Author")
@@ -652,6 +725,11 @@ namespace PesKit.Migrations
                     b.Navigation("Slide");
                 });
 
+            modelBuilder.Entity("PesKit.Models.AppUser", b =>
+                {
+                    b.Navigation("BasketItems");
+                });
+
             modelBuilder.Entity("PesKit.Models.Author", b =>
                 {
                     b.Navigation("Blogs");
@@ -665,6 +743,11 @@ namespace PesKit.Migrations
             modelBuilder.Entity("PesKit.Models.Department", b =>
                 {
                     b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("PesKit.Models.Order", b =>
+                {
+                    b.Navigation("BasketItems");
                 });
 
             modelBuilder.Entity("PesKit.Models.Position", b =>

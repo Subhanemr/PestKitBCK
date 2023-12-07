@@ -20,5 +20,8 @@ namespace PesKit.DAL
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectImage> ProjectImages { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<BasketItem> BasketItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
+
     }
 }

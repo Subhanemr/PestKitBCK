@@ -105,7 +105,7 @@ namespace PesKit.Controllers
                 return View(loginVM);
             }
 
-
+            Response.Cookies.Delete("BasketPeskit");
             if (returnUrl == null)
             {
                 return RedirectToAction("Index", "Home");
