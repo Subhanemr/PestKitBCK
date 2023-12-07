@@ -57,6 +57,8 @@ namespace PesKit.Controllers
 
             await _userManager.AddToRoleAsync(appUser, UserRoles.Member.ToString());
             await _signInManager.SignInAsync(appUser, false);
+
+            Response.Cookies.Delete("BasketPeskit");
             if (returnUrl == null)
             {
                 return RedirectToAction("Index", "Home");
