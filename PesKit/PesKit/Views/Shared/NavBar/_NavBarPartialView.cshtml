@@ -1,64 +1,22 @@
-﻿@*     <!-- Navbar Start -->
-<div class="container-fluid bg-dark">
-    <div class="container">
-        <nav class="navbar navbar-dark navbar-expand-lg py-lg-0">
-            <a href="index.html" class="navbar-brand">
-                <h1 class="text-primary mb-0 display-5">Pest<span class="text-white">Kit</span><i class="fa fa-spider text-primary ms-2"></i></h1>
-            </a>
-            <button class="navbar-toggler bg-primary" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="fa fa-bars text-dark"></span>
-            </button>
-            <div class="collapse navbar-collapse me-n3" id="navbarCollapse">
-                <div class="navbar-nav ms-auto">
-                    <a asp-action="Index" asp-controller="Home" class="nav-item nav-link">Home</a>
-                    <a asp-action="About" asp-controller="Home" class="nav-item nav-link">About</a>
-                    <a class="nav-item nav-link">Services</a>
-                    <a asp-controller="Project" asp-action="Index" class="nav-item nav-link">Projects</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                        <div class="dropdown-menu m-0 bg-primary">
-                            <a href="price.html" class="dropdown-item">Pricing Plan</a>
-                            <a asp-controller="Department" asp-action="Index" class="dropdown-item">Our Departments</a>
-                            <a asp-controller="Blog" asp-action="Index" class="dropdown-item">Blog Post</a>
-                            <a asp-action="Index" asp-controller="Employee" class="dropdown-item">Team Members</a>
-                            <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                            <a href="404.html" class="dropdown-item">404 Page</a>
-                        </div>
-                    </div>
-                    <a href="contact.html" class="nav-item nav-link">Contact</a>
-                </div>
-            </div>
-        </nav>
-    </div>
-</div>
-<!-- Navbar End --> *@
-
+﻿@inject ServicesLayout service
+@model List<CartItemVM>
 <!-- Cart Offcanvas Start -->
 <div class="offcanvas offcanvas-end" id="minicart">
     <div class="offcanvas-header">
         <h1 class="offcanvas-title">Cart</h1>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
     </div>
-    <div class="offcanvas-body">
-        <ul>
-            <li class="cart_product">
-                <div>
-                    <p>Product Name</p>
-                    <p>product_count x $product_price</p>
-                </div>
-                <button class="delete-button text-danger"><i class="fas fa-trash fa-fw"></i></button>
-            </li>
-        </ul>
-        <p>Subtotal: $total_price</p>
-    </div>
-    <a class="btn btn-dark" asp-action="Index" asp-controller="Cart">View Cart</a>
+
+    @{
+        await Html.PartialAsync("CartOfcanvas/_CartOffcanvasPartialView", await service.GetItemAsync());
+    }
 </div>
 <!-- Cart Offcanvas End -->
 <!-- Navbar Start -->
 <div class="container-fluid bg-dark">
     <div class="container">
         <nav class="navbar navbar-dark navbar-expand-lg py-lg-0">
-            <a href="index.html" class="navbar-brand">
+            <a asp-action="Index" asp-controller="Home" class="navbar-brand">
                 <h1 class="text-primary mb-0 display-5">
                     Pest<span class="text-white">Kit</span><i class="fa fa-spider text-primary ms-2"></i>
                 </h1>
@@ -80,6 +38,7 @@
                             <a asp-controller="Department" asp-action="Index" class="dropdown-item">Our Departments</a>
                             <a asp-controller="Blog" asp-action="Index" class="dropdown-item">Blog Post</a>
                             <a asp-action="Index" asp-controller="Employee" class="dropdown-item">Team Members</a>
+                            <a asp-action="Index" asp-controller="Product" class="dropdown-item">Products</a>
                             <a href="testimonial.html" class="dropdown-item">Testimonial</a>
                             <a href="404.html" class="dropdown-item">404 Page</a>
                         </div>
@@ -88,7 +47,7 @@
                     <a href="javascript:;" class="nav-item nav-link minicart-btn toolbar-btn"
                        data-bs-toggle="offcanvas" data-bs-target="#minicart">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="quantity">3</span>
+                        <span class="quantity">@Model.Count</span>
                     </a>
                 </div>
             </div>

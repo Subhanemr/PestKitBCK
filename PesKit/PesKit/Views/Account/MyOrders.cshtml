@@ -1,0 +1,62 @@
+﻿@model List<CartItemVM>
+@{
+    decimal total = 0;
+}
+<!-- Cart Start -->
+<section class="container-fluid py-5 shoping-cart spad">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="shoping__product">My Orders</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (CartItemVM item in Model)
+                            {
+                                total += item.SubTotal;
+                                <tr>
+                                    <td class="shoping__cart__item">
+                                        <img src="~/img//@item.Img" alt="@item.Name" class="w-25">
+                                        <h5>@item.Name</h5>
+                                    </td>
+                                    <td class="shoping__cart__price">
+                                        $@item.Price
+                                    </td>
+                                    <td class="shoping__cart__quantity">
+                                        <div class="quantity">
+                                            <div class="pro-qty">
+                                                <p class="fw-bold mx-2 mt-3">@item.Count</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="shoping__cart__total">
+                                        $@item.SubTotal
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="shoping__checkout">
+                    <h5>Total</h5>
+                    <ul>
+                        <li>Total <span>$@total</span></li>
+                    </ul>
+                    <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Cart End -->

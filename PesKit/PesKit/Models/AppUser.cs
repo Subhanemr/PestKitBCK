@@ -8,5 +8,6 @@ namespace PesKit.Models
         public string Surname { get; set; }
         public string Img { get; set; } = "default-profile.png";
         public List<BasketItem> BasketItems { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }

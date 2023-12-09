@@ -1,6 +1,16 @@
-﻿@model List<CartItemVM>
+﻿@inject ServicesLayout service
 @{
-    decimal total = 0;
+    List<CartItemVM> cartItems;
+    if (User.Identity.IsAuthenticated)
+    {
+        AppUser appUser = await service.GetCartUser();
+        cartItems = await service.GetDbItemAsync(appUser);
+    }
+    else
+    {
+        List<CartCookieItemVM> cartCookieItems = await service.GetCartCookie();
+        cartItems = await service.GetCookieItemAsync(cartCookieItems);
+    }
 }
 
 <!-- Cart Offcanvas Start -->
@@ -9,25 +19,14 @@
         <h1 class="offcanvas-title">Cart</h1>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
     </div>
-    <div class="offcanvas-body">
+    <div id="basket-container">
 
-        <ul>
-            @foreach (CartItemVM item in Model)
-            {
-                total += item.SubTotal;
-                <li class="cart_product">
-                    <div>
-                        <img src="~/img/@item.Img" class="w-25">
-                        <p>@item.Name</p>
-                        <p>@item.Count x $@item.Price</p>
-                    </div>
-                    <a class="delete-button text-danger" asp-action="DeleteItem" asp-controller="Cart" asp-route-id="@item.Id"><i class="fas fa-trash fa-fw"></i></a>
-                </li>
-            }
-        </ul>
-        <p class="mx-4 fw-bold">Total: $@total</p>
-    </div>
+
+@await Html.PartialAsync("CartOfcanvas/_CartOffcanvasPartialView", await service.GetItemAsync())
     <a class="btn btn-dark w-75 mb-5 mx-5" asp-action="Index" asp-controller="Cart">View Cart</a>
+    </div>
+
+
 </div>
 <!-- Cart Offcanvas End -->
 <!-- Navbar Start -->
@@ -65,7 +64,7 @@
                     <a href="javascript:;" class="nav-item nav-link minicart-btn toolbar-btn"
                        data-bs-toggle="offcanvas" data-bs-target="#minicart">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="quantity">@Model.Count</span>
+                        <span class="quantity cartItemCount">@cartItems.Count</span>
                     </a>
                 </div>
             </div>

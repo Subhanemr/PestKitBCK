@@ -1,6 +1,6 @@
 ﻿@model EditUserVM
 
-<div class="container">
+<div class="container d-flex my-3">
     <div class="card-body">
         <h4 class="card-title">Edit Profile</h4>
         <form class="forms-sample" method="post" enctype="multipart/form-data">
@@ -31,5 +31,11 @@
             <button type="submit" class="btn btn-primary me-2 mt-2">Submit</button>
             <a asp-action="Index" asp-controller="Home" class="btn btn-light mt-2">Cancel</a>
         </form>
+    </div>
+    <div class="bg-secondary border rounded-3">
+        <ul class="p-3 text-white list-unstyled">
+            <li class="list-item"><a asp-action="EditUser" asp-controller="Account">Edit Profile</a></li>
+            <li class="list-item"><a asp-action="MyOrders" asp-controller="Account">My Orders</a></li>
+        </ul>
     </div>
 </div>
