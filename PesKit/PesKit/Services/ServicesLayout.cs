@@ -28,7 +28,7 @@ namespace PesKit.LayoutService
             List<CartItemVM> cartVM = new List<CartItemVM>();
             if (_http.HttpContext.User.Identity.IsAuthenticated)
             {
-                AppUser appUser = await _userManager.Users.Include(b => b.BasketItems).ThenInclude(p => p.Product)
+                AppUser appUser = await _userManager.Users.Include(b => b.BasketItems.Where(p => p.OrderId == null)).ThenInclude(p => p.Product)
                     .FirstOrDefaultAsync(u => u.Id == _http.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
                 foreach (BasketItem item in appUser.BasketItems)
                 {
@@ -130,7 +130,7 @@ namespace PesKit.LayoutService
 
         public async Task<AppUser> GetCartUser()
         {
-            AppUser appUser = await _userManager.Users.Include(b => b.BasketItems).ThenInclude(p => p.Product)
+            AppUser appUser = await _userManager.Users.Include(b => b.BasketItems.Where(p => p.OrderId == null)).ThenInclude(p => p.Product)
                 .FirstOrDefaultAsync(u => u.Id == _http.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
             return appUser;
         }

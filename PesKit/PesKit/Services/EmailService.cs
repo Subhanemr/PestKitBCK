@@ -20,7 +20,7 @@ namespace PesKit.Services
             smtpClient.EnableSsl = true;
             smtpClient.Credentials = new NetworkCredential(_conf["Email:LoginEmail"], _conf["Email:Password"]);
 
-            MailAddress from = new MailAddress(_conf["LoginEmail"],"PestKit Administrations");
+            MailAddress from = new MailAddress(_conf["Email:LoginEmail"],"PestKit Administrations");
             MailAddress to = new MailAddress(emailTo);
 
             MailMessage message = new MailMessage(from,to);

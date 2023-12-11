@@ -179,7 +179,8 @@ namespace PesKit.Controllers
                 cartItems = await _layoutServices.GetCookieItemAsync(cart);
             }
 
-            return PartialView("CartOfcanvas/_CartOffcanvasPartialView", cartItems);
+            //return PartialView("CartOfcanvas/_CartOffcanvasPartialView", cartItems);
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> CountMinus(int id)
@@ -328,36 +329,15 @@ namespace PesKit.Controllers
         public async Task<string> Table(Order order)
         {
             string bodyHtml = @"
-<style>
-table {font - family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-  border-radius: 10px;
-  background-color: #E2E0E0;
-}
+<h2 style=""font-family: arial, sans-serif; margin:15px;"">Your Order</h2>
 
-td, th {border - bottom: 1px solid #9E9E9E;
-  text-align: left;
-  border-radius: 25px;
-  padding: 20px;
-
-            }
-th{
-font-weight: bold;
-}
-
-
-</style>
-
-<h2>Your Order</h2>
-
-<table>
+<table style=""font-family: arial, sans-serif; border-collapse: collapse; width: 100%; border-radius: 10px; background-color: #E2E0E0;"">
                             <thead>
                                 <tr>
-                                    <th>Product</th>
-                                    <th>Unit Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
+                                    <th style=""border-bottom: 1px solid #9E9E9E; text-align: left; padding: 20px; font-weight: bold;  font-size: 25px;"">Product</th>
+                                    <th style=""border-bottom: 1px solid #9E9E9E; text-align: left; padding: 20px; font-weight: bold;  font-size: 25px;"">Unit Price</th>
+                                    <th style=""border-bottom: 1px solid #9E9E9E; text-align: left; padding: 20px; font-weight: bold;  font-size: 25px;"">Quantity</th>
+                                    <th style=""border-bottom: 1px solid #9E9E9E; text-align: left; padding: 20px; font-weight: bold;  font-size: 25px;"">Total</th>
                                 </tr>
                             </thead>
                             <tbody>";
@@ -369,27 +349,25 @@ font-weight: bold;
                 bodyHtml += $@"
                                     <tr>
 
-                                        <td>
-                                            <a>{item.Product.Name}</a>
+                                        <td style=""border-bottom: 1px solid #9E9E9E; text-align: left; padding: 20px; font-size: 20px;"">
+                                            {item.Product.Name}
                                         </td>
-                                        <td>
-                                            <p>{item.Price}</p>
+                                        <td style=""border-bottom: 1px solid #9E9E9E; text-align: left; padding: 20px; font-size: 20px;"">
+                                            ${item.Price}
                                         </td>
-                                        <td>
-                                            <div>
-                                                <p>{item.Count}</p>
-                                            </div>
+                                        <td style=""border-bottom: 1px solid #9E9E9E; text-align: left; padding: 20px; font-size: 20px;"">
+                                            {item.Count}
                                         </td>
-                                        <td>
-                                            <span>{total}</span>
+                                        <td style=""border-bottom: 1px solid #9E9E9E; text-align: left; padding: 20px; font-size: 20px;"">
+                                            ${total}
                                         </td>
                                     </tr>
                                     <tr>";
             }
 
             bodyHtml += $@"                              
-                                    	<td colspan=""4"">
-                                    		<h2>Orders totals</h2> <p><h3>Total</h4> <h4>${total}</h5><p>
+                                    	<td colspan=""4"" style=""border-bottom: 1px solid #9E9E9E; text-align: left; padding: 20px; font-size: 25px;"">
+                                    		<h2>Orders totals</h2> <h4>Total: ${total}</h4>
                                         </td>
                                     </tr>
 

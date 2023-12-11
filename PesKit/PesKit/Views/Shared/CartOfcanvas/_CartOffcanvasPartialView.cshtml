@@ -15,7 +15,10 @@
                     <p>@item.Name</p>
                     <p>@item.Count x $@item.Price</p>
                 </div>
-                <a class="delete-from-cart delete-button text-danger" asp-action="DeleteItem" asp-controller="Cart" asp-route-id="@item.Id"><i class="fas fa-trash fa-fw"></i></a>
+                @if (!Context.Request.Path.StartsWithSegments("/Account/MyOrders"))
+                {
+                    <a class="delete-from-cart delete-button text-danger" asp-action="DeleteItem" asp-controller="Cart" asp-route-id="@item.Id"><i class="fas fa-trash fa-fw"></i></a>
+                }
             </li>
         }
     </ul>

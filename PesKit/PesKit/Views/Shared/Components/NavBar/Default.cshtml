@@ -16,14 +16,22 @@
 <!-- Cart Offcanvas Start -->
 <div class="offcanvas offcanvas-end" id="minicart">
     <div class="offcanvas-header">
-        <h1 class="offcanvas-title">Cart</h1>
+        @if (!Context.Request.Path.StartsWithSegments("/Account/MyOrders"))
+        {
+            <h1 class="offcanvas-title">Cart</h1>
+        }
+        else
+        {
+            <h1 class="offcanvas-title">My Orders</h1>
+        }
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
     </div>
     <div id="basket-container">
 
 
-@await Html.PartialAsync("CartOfcanvas/_CartOffcanvasPartialView", await service.GetItemAsync())
-    <a class="btn btn-dark w-75 mb-5 mx-5" asp-action="Index" asp-controller="Cart">View Cart</a>
+        @await Html.PartialAsync("CartOfcanvas/_CartOffcanvasPartialView", await service.GetItemAsync())
+        <a class="btn btn-dark w-75 mb-2 mx-5" asp-action="Index" asp-controller="Cart">View Cart</a>
+        <a class="btn btn-dark w-75 mb-2 mx-5" asp-action="Checkout" asp-controller="Cart">Checkout</a>
     </div>
 
 

@@ -1,0 +1,39 @@
+﻿@model OrderVM
+@{
+    decimal total = 0;
+}
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
+    <div class="container">
+        <div class="checkout__form">
+            <h4>Billing Details</h4>
+            <form method="post">
+                <div class="row">
+                    <div class="col-lg-8 col-md-6">
+                        <div class="checkout__input">
+                            <label asp-for="Address">Address</label>
+                            <input asp-for="Address" placeholder="Address" class="checkout__input__add">
+                            <span asp-validation-for="Address"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="checkout__order">
+                            <h4>Your Order</h4>
+                            <div class="checkout__order__products">Products <span>Total</span></div>
+                            <ul>
+                                @foreach (BasketItem item in Model.BasketItems)
+                                {
+                                    total += item.Product.Price * item.Count;
+                                    <li>@item.Product.Name <b>@item.Product.Price X @item.Count</b> <span>$@(item.Product.Price * item.Count)</span></li>
+                                }
+                            </ul>
+                            <div class="checkout__order__total">Total <span>$@total</span></div>
+                            <button type="submit" class="btn btn-warning">PLACE ORDER</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- Checkout Section End -->

@@ -1,6 +1,6 @@
 ﻿const cartItemHolder = document.querySelector(".cart-item-holder");
 const addToCartButtons = document.querySelectorAll(".add-to-cart");
-const deleteFromCartButtons = document.querySelectorAll(".delete-from-cart"); 
+//const deleteFromCartButtons = document.querySelectorAll(".delete-from-cart"); 
 const cartCountElement = document.querySelector(".cartItemCount");
 
 addToCartButtons.forEach(button =>
@@ -20,21 +20,21 @@ addToCartButtons.forEach(button =>
 );
 
 
-deleteFromCartButtons.forEach(button =>
-    button.addEventListener("click", ev => {
-        ev.preventDefault();
+//deleteFromCartButtons.forEach(button =>
+//    button.addEventListener("click", ev => {
+//        ev.preventDefault();
 
-        const href = ev.target.getAttribute("href");
+//        const href = ev.target.getAttribute("href");
 
-        fetch(href)
-            .then(res => res.text())
-            .then(data => {
-                cartItemHolder.innerHTML = data;
-                updateCartItemCount();
-            })
-            .catch(error => console.error("Error fetching data:", error));
-    })
-);
+//        fetch(href)
+//            .then(res => res.text())
+//            .then(data => {
+//                cartItemHolder.innerHTML = data;
+//                updateCartItemCount();
+//            })
+//            .catch(error => console.error("Error fetching data:", error));
+//    })
+//);
 
 function updateCartItemCount() {
     const cartItems = document.querySelectorAll(".getCartItemCount");
