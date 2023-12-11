@@ -179,8 +179,8 @@ namespace PesKit.Controllers
                 cartItems = await _layoutServices.GetCookieItemAsync(cart);
             }
 
-            //return PartialView("CartOfcanvas/_CartOffcanvasPartialView", cartItems);
-            return RedirectToAction(nameof(Index));
+            return PartialView("CartOfcanvas/_CartOffcanvasPartialView", cartItems);
+            //return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> CountMinus(int id)

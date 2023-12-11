@@ -17,7 +17,7 @@
                 </div>
                 @if (!Context.Request.Path.StartsWithSegments("/Account/MyOrders"))
                 {
-                    <a class="delete-from-cart delete-button text-danger" asp-action="DeleteItem" asp-controller="Cart" asp-route-id="@item.Id"><i class="fas fa-trash fa-fw"></i></a>
+                    <a class="delete-button text-danger delete-from-cart" asp-action="DeleteItem" asp-controller="Cart" asp-route-id="@item.Id"><i class="fas fa-trash fa-fw"></i></a>
                 }
             </li>
         }
