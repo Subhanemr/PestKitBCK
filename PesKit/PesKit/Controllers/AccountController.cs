@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Common;
+using PesKit.Interfaces;
 using PesKit.Models;
 using PesKit.Utilities.Enums;
 using PesKit.Utilities.Validata;
@@ -16,13 +18,15 @@ namespace PesKit.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IWebHostEnvironment _env;
+        private readonly IEmailService _emailService;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager, IWebHostEnvironment env)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager, IWebHostEnvironment env, IEmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _env = env;
+            _emailService = emailService;
         }
 
 
@@ -58,14 +62,42 @@ namespace PesKit.Controllers
             }
 
             await _userManager.AddToRoleAsync(appUser, UserRoles.Member.ToString());
+
+
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+            var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { token, Email = appUser.Email }, Request.Scheme);
+            await _emailService.SendEmail(appUser.Email, "Email Confirmation", confirmationLink);
+            
+            Response.Cookies.Delete("BasketPeskit");
+
+            //await _signInManager.SignInAsync(appUser, false);
+
+            //if (returnUrl == null)
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
+            //return Redirect(returnUrl);
+            return RedirectToAction(nameof(SuccessfullyRegistred), "Account");
+
+        }
+
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        {
+            AppUser appUser = await _userManager.FindByEmailAsync(email);
+            if (appUser == null) return NotFound();
+            var result = await _userManager.ConfirmEmailAsync(appUser, token);
+            if (!result.Succeeded)
+            {
+                return BadRequest();
+            }
             await _signInManager.SignInAsync(appUser, false);
 
-            Response.Cookies.Delete("BasketPeskit");
-            if (returnUrl == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            return Redirect(returnUrl);
+            return View();
+        }
+
+        public IActionResult SuccessfullyRegistred()
+        {
+            return View();
         }
 
         public async Task<IActionResult> LogOut(string? returnUrl)
@@ -101,6 +133,11 @@ namespace PesKit.Controllers
             if (result.IsLockedOut)
             {
                 ModelState.AddModelError(string.Empty, "Login is not enable please try latter");
+                return View(loginVM);
+            }
+            if (!user.EmailConfirmed)
+            {
+                ModelState.AddModelError(string.Empty, "Confirm your email");
                 return View(loginVM);
             }
             if (!result.Succeeded)

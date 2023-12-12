@@ -4,7 +4,7 @@
     decimal total = 0;
 }
 
-<div class="offcanvas-body cart-item-holder">
+<div class="offcanvas-body cart-item-holder getCartItemCount" data-count="@Model.Count">
     <ul>
         @foreach (CartItemVM item in Model)
         {
@@ -17,11 +17,12 @@
                 </div>
                 @if (!Context.Request.Path.StartsWithSegments("/Account/MyOrders"))
                 {
-                    <a class="delete-button text-danger delete-from-cart" asp-action="DeleteItem" asp-controller="Cart" asp-route-id="@item.Id"><i class="fas fa-trash fa-fw"></i></a>
+                    <a class=" subu text-danger delete-from-cart" onclick="removeSubu(event, @item.Id)">
+                         <i class="fas fa-trash fa-fw"></i>
+                    </a>
                 }
             </li>
         }
     </ul>
     <p class="mx-4 fw-bold">Total: $@total</p>
 </div>
-
