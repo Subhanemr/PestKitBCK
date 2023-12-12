@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PesKit.Areas.PestKitAdmin.ViewModels;
 using PesKit.DAL;
 using PesKit.Models;
+using PesKit.Utilities.Exceptions;
 using PesKit.Utilities.Validata;
 
 namespace PesKit.Areas.PestKitAdmin.Controllers
@@ -129,9 +130,9 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(int id)
         {
-            if (id <= 0) { return BadRequest(); }
+            if (id <= 0) { throw new WrongRequestException("The request sent does not exist"); }
             Project project = await _context.Projects.Include(x => x.ProjectImages).FirstOrDefaultAsync(x => x.Id == id);
-            if (project is null) { return NotFound(); }
+            if (project is null) { throw new NotFoundException("Your request was not found"); }
             UpdateProjectVM projectVM = new UpdateProjectVM
             {
                 Name = project.Name,
@@ -147,7 +148,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
 
             projectVM.ProjectImages = existed.ProjectImages;
             if (!ModelState.IsValid) { return View(projectVM); }
-            if (existed is null) { return NotFound(); }
+            if (existed is null) { throw new NotFoundException("Your request was not found"); }
 
             if (projectVM.MainPhoto is not null)
             {
@@ -254,9 +255,9 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> More(int id)
         {
-            if (id <= 0) { return BadRequest(); }
+            if (id <= 0) { throw new WrongRequestException("The request sent does not exist"); }
             Project project = await _context.Projects.Include(p => p.ProjectImages).FirstOrDefaultAsync(p => p.Id == id);
-            if (project is null) { return NotFound(); }
+            if (project is null) { throw new NotFoundException("Your request was not found"); }
             return View(project);
         }
 
@@ -264,9 +265,9 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id <= 0) { return BadRequest(); }
+            if (id <= 0) { throw new WrongRequestException("The request sent does not exist"); }
             Project project = await _context.Projects.Include(pi => pi.ProjectImages).FirstOrDefaultAsync(p => p.Id == id);
-            if (project is null) { return NotFound(); };
+            if (project is null) { throw new NotFoundException("Your request was not found"); };
             foreach (ProjectImage image in project.ProjectImages)
             {
                 image.Url.DeleteFileAsync(_env.WebRootPath, "img");

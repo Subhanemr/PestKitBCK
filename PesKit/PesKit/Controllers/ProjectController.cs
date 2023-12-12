@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PesKit.DAL;
 using PesKit.Models;
+using PesKit.Utilities.Exceptions;
 
 namespace PesKit.Controllers
 {
@@ -22,9 +23,9 @@ namespace PesKit.Controllers
 
         public async Task<IActionResult> More(int id)
         {
-            if (id <= 0) { return BadRequest(); }
+            if (id <= 0)  throw new WrongRequestException("The request sent does not exist"); 
             Project project = await _context.Projects.Include(p => p.ProjectImages).FirstOrDefaultAsync(pi => pi.Id == id);
-            if (project == null) { return NotFound(); }
+            if (project == null)  throw new NotFoundException("Your request was not found"); 
             return View(project);
         } 
         

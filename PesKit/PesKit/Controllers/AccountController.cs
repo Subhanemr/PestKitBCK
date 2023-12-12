@@ -5,6 +5,7 @@ using NuGet.Common;
 using PesKit.Interfaces;
 using PesKit.Models;
 using PesKit.Utilities.Enums;
+using PesKit.Utilities.Exceptions;
 using PesKit.Utilities.Validata;
 using PesKit.ViewModels;
 using System.Security.Claims;
@@ -84,11 +85,11 @@ namespace PesKit.Controllers
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
             AppUser appUser = await _userManager.FindByEmailAsync(email);
-            if (appUser == null) return NotFound();
+            if (appUser == null) throw new NotFoundException("Your request was not found");
             var result = await _userManager.ConfirmEmailAsync(appUser, token);
             if (!result.Succeeded)
             {
-                return BadRequest();
+                throw new WrongRequestException("The request sent does not exist");
             }
             await _signInManager.SignInAsync(appUser, false);
 

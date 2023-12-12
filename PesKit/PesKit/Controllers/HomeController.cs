@@ -26,6 +26,15 @@ namespace PesKit.Controllers
             return View(homeVM);
         }
 
+        public IActionResult ErrorPage(string error)
+        {
+            if (error == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model: error);
+        }
+
         public async Task<IActionResult> About()
         {
             List<Employee> employees = await _context.Employees.Include(e => e.Position).Take(4).ToListAsync();

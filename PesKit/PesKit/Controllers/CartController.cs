@@ -6,6 +6,7 @@ using PesKit.DAL;
 using PesKit.Interfaces;
 using PesKit.LayoutService;
 using PesKit.Models;
+using PesKit.Utilities.Exceptions;
 using PesKit.ViewModels;
 using System.Security.Claims;
 
@@ -77,9 +78,9 @@ namespace PesKit.Controllers
 
         public async Task<IActionResult> AddBasket(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
-            if (product == null) return NotFound();
+            if (product == null) throw new NotFoundException("Your request was not found");
             List<CartCookieItemVM> cart;
             List<CartItemVM> cartItems;
 
@@ -87,7 +88,7 @@ namespace PesKit.Controllers
             {
                 AppUser appUser = await _userManager.Users.Include(p => p.BasketItems.Where(p => p.OrderId == null)).ThenInclude(p => p.Product)
                     .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
-                if (appUser == null) return NotFound();
+                if (appUser == null) throw new NotFoundException("Your request was not found");
                 BasketItem item = appUser.BasketItems.FirstOrDefault(b => b.ProductId == id);
                 if (item == null)
                 {
@@ -147,16 +148,16 @@ namespace PesKit.Controllers
 
         public async Task<IActionResult> DeleteItem(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             List<CartItemVM> cartItems;
             if (User.Identity.IsAuthenticated)
             {
                 AppUser appUser = await _userManager.Users
                     .Include(b => b.BasketItems.Where(p => p.OrderId == null)).ThenInclude(p => p.Product)
                     .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
-                if (appUser == null) return NotFound();
+                if (appUser == null) throw new NotFoundException("Your request was not found");
                 BasketItem item = appUser.BasketItems.FirstOrDefault(b => b.ProductId == id);
-                if (item == null) return BadRequest();
+                if (item == null) throw new WrongRequestException("The request sent does not exist");
 
                 _context.BasketItems.Remove(item);
                 await _context.SaveChangesAsync();
@@ -166,7 +167,7 @@ namespace PesKit.Controllers
             {
                 List<CartCookieItemVM> cart = JsonConvert.DeserializeObject<List<CartCookieItemVM>>(Request.Cookies["BasketPeskit"]);
                 CartCookieItemVM item = cart.FirstOrDefault(c => c.Id == id);
-                if (item == null) return NotFound();
+                if (item == null) throw new NotFoundException("Your request was not found");
 
                 cart.Remove(item);
 
@@ -192,11 +193,11 @@ namespace PesKit.Controllers
                     .Include(b => b.BasketItems.Where(p => p.OrderId == null))
                     .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                if (appUser == null) return NotFound();
+                if (appUser == null) throw new NotFoundException("Your request was not found");
 
                 BasketItem item = appUser.BasketItems.FirstOrDefault(b => b.ProductId == id);
 
-                if (item == null) return BadRequest();
+                if (item == null) throw new WrongRequestException("The request sent does not exist");
 
                 item.Count--;
                 if (item.Count <= 0)
@@ -211,7 +212,7 @@ namespace PesKit.Controllers
 
                 CartCookieItemVM item = cart.FirstOrDefault(c => c.Id == id);
 
-                if (item == null) return BadRequest();
+                if (item == null) throw new WrongRequestException("The request sent does not exist");
 
                 item.Count--;
                 if (item.Count <= 0)
@@ -237,11 +238,11 @@ namespace PesKit.Controllers
                     .Include(b => b.BasketItems.Where(p => p.OrderId == null))
                     .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-                if (appUser == null) return NotFound();
+                if (appUser == null) throw new NotFoundException("Your request was not found");
 
                 BasketItem item = appUser.BasketItems.FirstOrDefault(b => b.ProductId == id);
 
-                if (item == null) return BadRequest();
+                if (item == null) throw new WrongRequestException("The request sent does not exist");
 
                 item.Count++;
                 if (item.Count <= 0)
@@ -256,7 +257,7 @@ namespace PesKit.Controllers
 
                 CartCookieItemVM item = cart.FirstOrDefault(c => c.Id == id);
 
-                if (item == null) return BadRequest();
+                if (item == null) throw new WrongRequestException("The request sent does not exist");
 
                 item.Count++;
                 if (item.Count <= 0)

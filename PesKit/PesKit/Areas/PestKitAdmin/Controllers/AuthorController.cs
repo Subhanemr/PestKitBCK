@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PesKit.Areas.PestKitAdmin.ViewModels;
 using PesKit.DAL;
 using PesKit.Models;
+using PesKit.Utilities.Exceptions;
 
 namespace PesKit.Areas.PestKitAdmin.Controllers
 {
@@ -60,9 +61,9 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(int id)
         {
-            if (id <= 0) { return BadRequest(); }
+            if (id <= 0) { throw new WrongRequestException("The request sent does not exist"); }
             Author author = await _context.Author.FirstOrDefaultAsync(c => c.Id == id);
-            if (author == null) { return NotFound(); }
+            if (author == null) { throw new NotFoundException("Your request was not found"); }
             CreateUpdateAuthorVM authorVM = new CreateUpdateAuthorVM { Name = author.Name, Surname = author.Surname };
 
             return View(authorVM);
@@ -73,7 +74,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         {
             if (!ModelState.IsValid) { return View(authorVM); };
             Author exist = await _context.Author.FirstOrDefaultAsync(c => c.Id == id);
-            if (exist == null) { return NotFound(); };
+            if (exist == null) { throw new NotFoundException("Your request was not found"); };
             bool result = await _context.Author.AnyAsync(c => c.Name.Trim().ToLower() == exist.Name.Trim().ToLower() && c.Id != id);
             if (result)
             {
@@ -90,10 +91,10 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id < 0) { return BadRequest(); }
+            if (id < 0) { throw new WrongRequestException("The request sent does not exist"); }
 
             Author author = await _context.Author.FirstOrDefaultAsync(c => c.Id == id);
-            if (author == null) { return NotFound(); }
+            if (author == null) { throw new NotFoundException("Your request was not found"); }
             _context.Author.Remove(author);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
@@ -102,9 +103,9 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> More(int id)
         {
-            if (id <= 0) { return BadRequest(); }
+            if (id <= 0) { throw new WrongRequestException("The request sent does not exist"); }
             Author author = _context.Author.Include(c => c.Blogs).FirstOrDefault(c => c.Id == id);
-            if (author == null) { return NotFound(); }
+            if (author == null) { throw new NotFoundException("Your request was not found"); }
             return View(author);
         }
 

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PesKit.Areas.PestKitAdmin.ViewModels;
 using PesKit.DAL;
 using PesKit.Models;
+using PesKit.Utilities.Exceptions;
 using PesKit.Utilities.Validata;
 
 namespace PesKit.Areas.PestKitAdmin.Controllers
@@ -24,10 +25,21 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
 
         [Authorize(Roles = "Admin,Moderator")]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page)
         {
-            List<Employee> employees = await _context.Employees.Include(e => e.Department).Include(e => e.Position).ToListAsync();
-            return View(employees);
+            if (page < 0) throw new WrongRequestException("The request sent does not exist");
+            double count = await _context.Employees.CountAsync();
+            List<Employee> employees = await _context.Employees.Skip(page * 4).Take(4)
+                .Include(e => e.Department).Include(e => e.Position).ToListAsync();
+
+            PaginationVM<Employee> paginationVM = new PaginationVM<Employee>
+            {
+                CurrentPage = page + 1,
+                TotalPage = Math.Ceiling(count / 4),
+                Items = employees
+            };
+            if (paginationVM.TotalPage < page) throw new NotFoundException("Your request was not found");
+            return View(paginationVM);
         }
 
         [Authorize(Roles = "Admin,Moderator")]
@@ -99,9 +111,9 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(int id)
         {
-            if (id <= 0) { return BadRequest(); }
+            if (id <= 0) { throw new WrongRequestException("The request sent does not exist"); }
             Employee employee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
-            if (employee == null) { return NotFound(); }
+            if (employee == null) { throw new NotFoundException("Your request was not found"); }
             UpdateEmployeeVM employeeVM = new UpdateEmployeeVM
             {
                 DepartmentId = employee.DepartmentId,
@@ -130,7 +142,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                 return View(employeeVM);
             }
             Employee existed = _context.Employees.FirstOrDefault(b => b.Id == id);
-            if (existed == null) { return NotFound(); }
+            if (existed == null) { throw new NotFoundException("Your request was not found"); }
             if (employeeVM.Photo is not null)
             {
                 if (!employeeVM.Photo.ValiDataType())
@@ -169,10 +181,10 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id <= 0) { return BadRequest(); }
+            if (id <= 0) { throw new WrongRequestException("The request sent does not exist"); }
 
             Employee employee = await _context.Employees.SingleOrDefaultAsync(e => e.Id == id);
-            if (employee == null) { return NotFound(); }
+            if (employee == null) { throw new NotFoundException("Your request was not found"); }
             employee.ImgUrl.DeleteFileAsync(_env.WebRootPath, "img");
 
 
@@ -185,10 +197,10 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> More(int id)
         {
-            if (id <= 0) { return BadRequest(); };
+            if (id <= 0) { throw new WrongRequestException("The request sent does not exist"); };
             Employee employee = await _context.Employees.Include(e => e.Department).Include(e => e.Position).FirstOrDefaultAsync(e => e.Id == id);
 
-            if (employee == null) { return NotFound(); };
+            if (employee == null) { throw new NotFoundException("Your request was not found"); };
 
             return View(employee);
         }

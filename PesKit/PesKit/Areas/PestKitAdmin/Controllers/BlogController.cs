@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using PesKit.Areas.PestKitAdmin.ViewModels;
 using PesKit.DAL;
 using PesKit.Models;
+using PesKit.Utilities.Exceptions;
 using PesKit.Utilities.Validata;
 
 namespace PesKit.Areas.PestKitAdmin.Controllers
@@ -117,10 +118,10 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(int id)
         {
-            if (id <= 0) { return BadRequest(); }
+            if (id <= 0) { throw new WrongRequestException("The request sent does not exist"); }
             Blog blog = await _context.Blogs.Include(c => c.Tags).FirstOrDefaultAsync(b => b.Id == id);
             if (blog == null)
-                return NotFound();
+                throw new NotFoundException("Your request was not found");
             UpdateBlogVM blogVM = new UpdateBlogVM
             {
                 Title = blog.Title,
@@ -146,7 +147,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
                 return View(blogVM);
             }
             Blog existed = _context.Blogs.Include(c => c.Tags).FirstOrDefault(b => b.Id == id);
-            if (existed == null) { return NotFound(); }
+            if (existed == null) { throw new NotFoundException("Your request was not found"); }
             bool result = await _context.Blogs.AnyAsync(b => b.Title.Trim().ToLower() == blogVM.Title.Trim().ToLower() && b.Id != id);
             if (result)
             {
@@ -202,9 +203,9 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id <= 0) { return BadRequest(); }
+            if (id <= 0) { throw new WrongRequestException("The request sent does not exist"); }
             Blog blog = await _context.Blogs.Include(b => b.Tags).FirstOrDefaultAsync(b => b.Id == id);
-            if (blog == null) { return NotFound(); }
+            if (blog == null) { throw new NotFoundException("Your request was not found"); }
             blog.ImgUrl.DeleteFileAsync(_env.WebRootPath, "img");
 
 
@@ -217,9 +218,9 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> More(int id)
         {
-            if (id <= 0) { return BadRequest(); }
+            if (id <= 0) { throw new WrongRequestException("The request sent does not exist"); }
             Blog blog = await _context.Blogs.Include(c => c.Author).Include(c => c.Tags).ThenInclude(c => c.Tag).FirstOrDefaultAsync(c => c.Id == id);
-            if (blog == null) { return NotFound(); }
+            if (blog == null) { throw new NotFoundException("Your request was not found"); }
             return View(blog);
         }
 

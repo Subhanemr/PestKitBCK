@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PesKit.Areas.PestKitAdmin.ViewModels;
 using PesKit.DAL;
 using PesKit.Models;
+using PesKit.Utilities.Exceptions;
 
 namespace PesKit.Areas.PestKitAdmin.Controllers
 {
@@ -57,10 +58,10 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Update(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Position position = await _context.Positions.FirstOrDefaultAsync(c => c.Id == id);
 
-            if (position == null) return NotFound();
+            if (position == null) throw new NotFoundException("Your request was not found");
             CreateUpdatePositionVM positionVM = new CreateUpdatePositionVM { Name = position.Name };
 
             return View(positionVM);
@@ -72,7 +73,7 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
             if (!ModelState.IsValid) return View(positionVM);
 
             Position existed = await _context.Positions.FirstOrDefaultAsync(c => c.Id == id);
-            if (existed == null) return NotFound();
+            if (existed == null) throw new NotFoundException("Your request was not found");
 
             bool result = await _context.Positions.AnyAsync(c => c.Name.ToLower().Trim() == positionVM.Name.ToLower().Trim() && c.Id != id);
 
@@ -91,9 +92,9 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Position existed = await _context.Positions.FirstOrDefaultAsync(c => c.Id == id);
-            if (existed == null) return NotFound();
+            if (existed == null) throw new NotFoundException("Your request was not found");
             _context.Positions.Remove(existed);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -103,11 +104,11 @@ namespace PesKit.Areas.PestKitAdmin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> More(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0) throw new WrongRequestException("The request sent does not exist");
             Position position = await _context.Positions
                 .Include(p => p.Employees)
                 .FirstOrDefaultAsync(p => p.Id == id);
-            if (position == null) return NotFound();
+            if (position == null) throw new NotFoundException("Your request was not found");
 
             return View(position);
         }
