@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PesKit.DAL;
 using PesKit.Interfaces;
 using PesKit.LayoutService;
+using PesKit.Middlewares;
 using PesKit.Models;
 using PesKit.Services;
 
@@ -37,6 +38,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();
 
+app.UseMiddleware<GlobalExceptionMiddleware>();
 app.MapControllerRoute(
     "Default",
     "{area}/{controller=home}/{action=index}/{id?}");
