@@ -20,7 +20,7 @@ namespace PesKit.Middlewares
             catch (Exception e)
             {
 
-                context.Response.Redirect($"/Home/ErrorPage=error={e.Message}");
+                context.Response.Redirect($"/Home/ErrorPage?error={e.Message}");
             }
         }
     }
