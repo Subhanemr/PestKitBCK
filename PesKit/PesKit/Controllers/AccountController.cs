@@ -206,7 +206,8 @@ namespace PesKit.Controllers
                     return View(editUserVM);
                 }
                 string fileName = await editUserVM.Photo.CreateFileAsync(_env.WebRootPath, "img");
-                appUser.Img.DeleteFileAsync(_env.WebRootPath, "img");
+                if (!appUser.Img.Contains("default-profile.png"))
+                    appUser.Img.DeleteFileAsync(_env.WebRootPath, "img");
                 appUser.Img = fileName;
             }
 
